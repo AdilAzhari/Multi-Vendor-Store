@@ -17,4 +17,4 @@ require __DIR__.'/auth.php';
 
 Route::controller(DashboardController::class)->group(function () {
     Route::get('/dashboard', 'index')->name('dashboard');
-});
+})->middleware('auth');

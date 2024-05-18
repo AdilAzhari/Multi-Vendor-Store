@@ -18,6 +18,9 @@ class VoltServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
+/**
+ * The boot function mounts specified directories for Volt views in a Laravel application.
+ */
     public function boot(): void
     {
         Volt::mount([
