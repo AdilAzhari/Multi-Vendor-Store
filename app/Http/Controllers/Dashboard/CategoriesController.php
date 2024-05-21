@@ -1,33 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // return view('dashboard.index');
+        $categories = Category::paginate(10);
+        return view('dashboard.categories.index',compact('categories'));
     }
 
-    function logout(Request $request)
-    {
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        // auth()->logout();
-        auth()->guard('web')->logout();
-        return redirect('/');
-    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('dashboard.categories.create');
     }
 
     /**
@@ -35,7 +30,13 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        Category::create($request->all());
+        return redirect()->route('dashboard.categories.index')->with('success','Category added successfully');
     }
 
     /**
