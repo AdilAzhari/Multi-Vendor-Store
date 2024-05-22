@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
@@ -14,7 +17,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = Category::paginate(10);
-        return view('dashboard.categories.index',compact('categories'));
+        return view('dashboard.categories.index', compact('categories'));
     }
 
     /**
@@ -22,21 +25,20 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('dashboard.categories.create');
+        $categories = Category::paginate(10);
+        return view('dashboard.categories.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
+        $request->merge([
+            'slug' => str::slug($request->name)
         ]);
-
         Category::create($request->all());
-        return redirect()->route('dashboard.categories.index')->with('success','Category added successfully');
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category added successfully');
     }
 
     /**
@@ -50,17 +52,24 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        //
+        $categories = Category::where('id', '!=', $category->id)->paginate(10);
+        return view('dashboard.categories.edit', compact('category', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $request->merge([
+            'slug' => str::slug($request->name)
+        ]);
+        return $request->all();
+        // $category->update($request->all());
+        // return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully');
     }
 
     /**
