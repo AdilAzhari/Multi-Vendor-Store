@@ -2,19 +2,21 @@
 @section('title', 'Edit Category')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">Categories</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">Categories</a></li>
     <li class="breadcrumb-item active">Edit Category</li>
 @endsection
 @section('content')
     <div class="container">
         <h1>Edit Category</h1>
-        <form action="{{ route('categories.update', $category->id) }}" method="POST">
+        <form action="{{ route('dashboard.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <div class="form-group">
                 {{-- <label for="name">Name</label> --}}
-                <x-form-input lable="Name" type="text" name="name" id="name" class="form-control" value="{{ $category->name }}"/>
+                {{-- <x-form-input lable="Name" type="text" name="name" id="name" class="form-control" value="{{ $category->name }}"/> --}}
+                    {{-- <x-form-input label="Name" type="text" name="name" id="name" class="form-control" value="{{ $category->name }}"/> --}}
+                    {{-- <x-form-input/> --}}
             </div>
 
             <div class="form-group">
@@ -46,7 +48,7 @@
                 <label for="slug">Slug</label>
                 <input type="text" name="slug" id="slug" class="form-control" value="{{ $category->slug }}">
             </dialog>
-            <a href="{{ route('categories.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('dashboard.categories.index') }}" class="btn btn-secondary">Cancel</a>
 
 
             <button type="submit" class="btn btn-primary">Update</button>

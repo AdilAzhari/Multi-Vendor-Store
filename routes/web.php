@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\DashboardController;
 use App\Livewire\Actions\Logout;
+use App\Livewire\Dashboard\CategoriesList;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -26,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/dashboard', DashboardController::class);
 
     Route::get('dashboard', [CategoriesController::class, 'index'])->name('dashboard');
+    // Route::get('dashboards', CategoriesList::class)->name('dashboards');
 
     Route::controller(CategoriesController::class)->prefix('categories')->name('dashboard.categories.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -34,6 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{id}', 'show')->name('show');
         Route::get('/{category}/edit', 'edit')->name('edit');
         Route::put('/{id}', 'update')->name('update');
-        Route::delete('/{id}', 'destroy')->name('destroy');
+        Route::delete('/{category}', 'destroy')->name('destroy');
     });
 });

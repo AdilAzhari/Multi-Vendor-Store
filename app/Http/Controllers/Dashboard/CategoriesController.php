@@ -34,6 +34,7 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        $request->parent_id;
         $request->merge([
             'slug' => str::slug($request->name)
         ]);
@@ -75,8 +76,9 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category deleted successfully');
     }
 }

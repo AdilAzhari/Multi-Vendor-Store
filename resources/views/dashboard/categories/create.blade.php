@@ -15,7 +15,7 @@
         <div class="col-lg-12">
             <div class="card card-table">
                 <div class="card-body">
-                    <form action="{{ route('dashboard.categories.store') }}" method="post">
+                    <form action="{{ route('dashboard.categories.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label for="name" class="col-md-2 col-form-label text-md-right">Name</label>
