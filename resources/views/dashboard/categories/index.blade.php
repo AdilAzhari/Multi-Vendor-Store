@@ -33,6 +33,8 @@
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parent
                         </th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status
+                        </th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
                         </th>
                     </tr>
@@ -44,6 +46,7 @@
                             <td class="px-4 py-2 text-sm text-gray-500">{{ $category->slug }}</td>
                             <td class="px-4 py-2 text-sm text-gray-500">
                                 {{ $category->parent ? $category->parent->name : 'N/A' }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-500">{{ $category->status }}</td>
                             <td class="px-4 py-2 flex items-center space-x-2">
                                 <a href="{{ route('dashboard.categories.edit', $category) }}"
                                     class="btn btn-primary btn-sm">

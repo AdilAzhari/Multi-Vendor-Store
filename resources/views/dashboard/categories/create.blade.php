@@ -37,7 +37,7 @@
                                     <option value="">Select a parent category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
-                                            {{ old('parent_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->parent_id == $category->id ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
                                     @endforeach
@@ -74,8 +74,8 @@
                             <div class="col-md-10">
                                 <select name="status" id="status"
                                     class="form-control @error('status') is-invalid @enderror">
-                                    <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
-                                    <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
+                                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                 </select>
                                 @error('status')
                                     <span class="invalid-feedback">{{ $message }}</span>

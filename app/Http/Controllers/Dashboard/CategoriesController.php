@@ -68,9 +68,15 @@ class CategoriesController extends Controller
         $request->merge([
             'slug' => str::slug($request->name)
         ]);
-        return $request->all();
-        // $category->update($request->all());
-        // return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully');
+        $category->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status,
+            'image' => $request->image,
+            'parent_id' => $request->parent_id,
+            'slug' => $request->slug,
+        ]);
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully');
     }
 
     /**
