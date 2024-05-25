@@ -7,11 +7,11 @@ return [
         'route' => 'dashboard',
         'active' => 'dashboard',
     ],
-    // [
-    //     'icon' => 'nav-icon fas fa-users',
-    //     'title' => 'Users',
-    //     'route' => 'dashboard.users.index',
-    // ],
+    [
+        'icon' => 'nav-icon fas fa-users',
+        'title' => 'Users',
+        // 'route' => 'dashboard.users.index',
+    ],
     [
         'icon' => 'nav-icon fas fa-list',
         'title' => 'Categories',
@@ -20,11 +20,12 @@ return [
         'active' => 'dashboard.categories.*',
         'badgeColor' => 'success'
     ],
-    // [
-    //     'icon' => 'nav-icon fas fa-list',
-    //     'title' => 'Products',
-    //     'route' => 'dashboard.products.index',
-    // ],
+    [
+        'icon' => 'nav-icon fas fa-list',
+        'title' => 'Products',
+        'route' => 'products.index',
+        'active' => 'products.*',
+    ],
     // [
     //     'icon' => 'nav-icon fas fa-list',
     //     'title' => 'Orders',

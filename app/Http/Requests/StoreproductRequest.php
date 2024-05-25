@@ -11,7 +11,7 @@ class StoreproductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class StoreproductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'store_id' => 'required|exists:stores,id',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'image|nullable',
+            'price' => 'required|numeric',
+            'compare_price' => 'numeric',
+            'options' => 'string|json|nullable',
+            'rating' => 'numeric',
+            'featured' => 'boolean',
+            'status' => 'required|in:draft,published,archived',
         ];
     }
 }

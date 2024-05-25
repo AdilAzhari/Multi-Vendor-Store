@@ -16,7 +16,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $request = request();
+        $filters = $request->all();
+        $categories = Category::Filter($filters)->withCount('products')->latest()->paginate(10);
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -86,5 +88,28 @@ class CategoriesController extends Controller
     {
         $category->delete();
         return redirect()->route('dashboard.categories.index')->with('success', 'Category deleted successfully');
+    }
+
+    public function trash(){
+        $categories = category::onlyTrashed()->paginate(5);
+        return view('dashboard.categories.trash', compact('categories'));
+    }
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(string $id){
+        category::onlyTrashed()->findOrFail($id)->restore();
+        return redirect()->route('dashboard.categories.index')->with('success', 'Category restored successfully');
+    }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function forceDelete(Category $category){
+        $category = $category->onlyTrashed();
+        if ($category->image != null) {
+            unlink(public_path('uploads/categories/' . $category->image));
+        }
+        $category->forceDelete();
+        return redirect()->route('dashboard.categories.trash')->with('success', 'Category deleted successfully');
     }
 }

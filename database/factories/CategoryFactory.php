@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
@@ -16,12 +18,14 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->name;
+
         return [
-            'name' => $this->faker->name,
             'description' => $this->faker->sentence,
             'image' => $this->faker->imageUrl,
-            'slug'=> $this->faker->slug,
-            'parent_id' => null,
+            'name' => $name,
+            'slug' => str::slug($name),
+            'parent_id' => Category::inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }

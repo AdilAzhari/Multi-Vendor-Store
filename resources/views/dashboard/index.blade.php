@@ -1,8 +1,8 @@
 @extends('layouts.dashboard')
 @section('title', 'Dashboard')
-@section('breadcrumb')
+{{-- @section('breadcrumb')
     <li class="breadcrumb-item active">Starter Page</li>
-@endsection
+@endsection --}}
 @section('content')
 
 

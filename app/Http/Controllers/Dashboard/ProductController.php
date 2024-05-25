@@ -8,13 +8,10 @@ use App\Http\Requests\StoreproductRequest;
 use App\Http\Requests\UpdateproductRequest;
 use App\Models\Category;
 use App\Models\Store;
+use illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function tailwind()
-    {
-        return view('components.form.tailwind');
-    }
     /**
      * Display a listing of the resource.
      */
@@ -40,7 +37,18 @@ class ProductController extends Controller
      */
     public function store(StoreproductRequest $request)
     {
-        //
+        $request->merge([
+            'slug' => str::slug($request->name)
+        ]);
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $image->store('products', 'public');
+            $request->merge([
+                'image' => $image->hashName()
+            ]);
+        }
+        product::create($request->all());
+        return redirect()->route('products.index')->with('success', 'Product added successfully');
     }
 
     /**
@@ -48,7 +56,7 @@ class ProductController extends Controller
      */
     public function show(product $product)
     {
-        //
+        return view('dashboard.products.show', compact('product'));
     }
 
     /**
@@ -56,7 +64,11 @@ class ProductController extends Controller
      */
     public function edit(product $product)
     {
-        //
+        $categories = Category::all();
+        $parentCategories  = Category::whereNull('parent_id')->get();
+        $stores = Store::all();
+        $product->load('category', 'store');
+        return view('dashboard.products.edit', compact('categories', 'parentCategories', 'stores', 'product'));
     }
 
     /**
@@ -64,7 +76,11 @@ class ProductController extends Controller
      */
     public function update(UpdateproductRequest $request, product $product)
     {
-        //
+        $request->merge([
+            'slug' => str::slug($request->name)
+        ]);
+        $product->update($request->all());
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -72,6 +88,25 @@ class ProductController extends Controller
      */
     public function destroy(product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('products.index')->with('Info', 'Product deleted and Trashed successfully');
+    }
+    public function trash()
+    {
+        $trashedProducts = product::onlyTrashed()->with('category')->latest()->paginate(10);
+        return view('dashboard.products.trash', compact('trashedProducts'));
+    }
+    public function restore($id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+        return redirect()->route('products.trash')->with('Warning', 'Product restored from trash successfully.');
+    }
+
+    public function forceDelete($id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->forceDelete();
+        return redirect()->route('products.trash')->with('Danger', 'Product permanently deleted.');
     }
 }
