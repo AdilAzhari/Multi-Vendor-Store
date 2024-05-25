@@ -1,86 +1,67 @@
-@extends('layouts.dashboard')
-@section('title', 'Trashed Categories')
-
-@section('breadcrumbs')
-    <nav aria-label="breadcrumb" class="flex items-center justify-between px-4 py-2 bg-gray-100 rounded-t-lg">
-        <ol class="flex items-center space-x-4">
-            <li class="text-sm font-medium">
-                <a href="" class="text-gray-700 hover:text-gray-900">Dashboard</a>
-            </li>
-            <li class="text-sm font-medium">
-                <span aria-current="page" class="text-gray-500">Trash ategory</span>
-            </li>
-        </ol>
-    </nav>
-@endsection
-@section('content')
-    <x-alert />
-    <div class="flex flex-col mb-4">
-        <div class="flex justify-between items-center px-4 py-2 bg-gray-100 rounded-t-lg">
-            <form action="{{ route('dashboard.categories.trash') }}" method="get"
-                class="flex items
-                -center space-x-4">
-                <div>
-                    <label for="status" class="text-sm font-medium text-gray-700">Status:</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="">All</option>
-                        <option value="active" @if (request('status') == 'active') selected @endif>Active</option>
-                        <option value="inactive" @if (request('status') == 'inactive') selected @endif>Inactive</option>
-                    </select>
-                </div>
-                <a href="{{ route('dashboard.categories.index') }}" class="btn btn-primary">Back</a>
-                <div>
-                    <label for="category" class="text-sm font-medium text-gray-700">Category:</label>
-                    <input type="text" name="name" id="category" class="form-input"
-                        value="@if (request('name')) {{ request('name') }} @endif">
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
+<x-app-layout>
+    <div class="container mx-auto py-8 px-4 md:px-8">
+        <x-alert />
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Trashed Categories</h1>
+            <a href="{{ route('categories.index') }}"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
+                Back to Categories
+            </a>
+        </div>
+        <div class="max-w-5xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">ID</th>
+                            <th scope="col" class="px-4 py-3">Name</th>
+                            <th scope="col" class="px-4 py-3">Description</th>
+                            <th scope="col" class="px-4 py-3">Slug</th>
+                            <th scope="col" class="px-4 py-3">Image</th>
+                            <th scope="col" class="px-4 py-3">Parent Category</th>
+                            <th scope="col" class="px-4 py-3">Status</th>
+                            <th scope="col" class="px-4 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($categories as $category)
+                            <tr class="border-b dark:border-gray-700 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800">
+                                <td class="px-4 py-3">{{ $category->id }}</td>
+                                <td class="px-4 py-3">{{ $category->name }}</td>
+                                <td class="px-4 py-3">{{ $category->description }}</td>
+                                <td class="px-4 py-3">{{ $category->slug }}</td>
+                                <td class="px-4 py-3">
+                                    <img src="{{ asset('uploads/categories/' . $category->image) }}" alt="{{ $category->name }}" class="w-12 h-12 object-cover rounded-full">
+                                </td>
+                                <td class="px-4 py-3">{{ $category->parent ? $category->parent->name : 'N/A' }}</td>
+                                <td class="px-4 py-3">{{ $category->status }}</td>
+                                <td class="px-4 py-3 flex space-x-2">
+                                    <form action="{{ route('categories.restore', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to restore this category?');" class="inline-block">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit"
+                                            class="inline-flex items-center px-2 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                            Restore
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('categories.forceDelete', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this category?');" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="inline-flex items-center px-2 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="px-4 py-3 text-center">No trashed categories found</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="overflow-x-auto rounded-lg shadow-md">
-        <table class="table table-striped divide-y divide-gray-200 min-w-full">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parent</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($categories as $category)
-                    <tr>
-                        <td class="px-4 py-2 text-sm font-medium text-gray-700">{{ $category->name }}</td>
-                        <td class="px-4 py-2 text-sm font-medium text-gray-700">{{ $category->slug }}</td>
-                        <td class="px-4 py-2 text-sm font-medium text-gray-700">{{ $category->parent->name ?? 'No parent' }}</td>
-                        <td class="px-4 py-2 text-sm font-medium text-gray-700">{{ $category->status }}</td>
-                        <td class="px-4 py-2 text-sm font-medium text-gray-700">
-                            <form action="{{ route('dashboard.categories.restore', $category) }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-primary">Restore</button>
-                            </form>
-                            <form action="{{ route('dashboard.categories.forceDelete', $category) }}" method="get">
-                                @csrf
-                                {{-- @method('post') --}}
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td class="px-4 py-2 text-sm font-medium text-gray-700" colspan="5">No categories found</
-                        td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    <div class="mt-4">
-        {{ $categories->links() }}
-    </div>
-
-
-@endsection
+</x-app-layout>

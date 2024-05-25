@@ -1,96 +1,49 @@
-@extends('layouts.dashboard')
-@section('title', 'Create Category')
-@section('breadcrumbs')
-    <nav aria-label="breadcrumb" class="breadcrumb-nav">
-        <ol class="breadcrumb">
-            <li class="breadcrumb item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">Categories</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Create Category</li>
-        </ol>
-    </nav>
-@endsection
-
-@section('content')
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-table">
-                <div class="card-body">
-                    <form action="{{ route('dashboard.categories.store') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group row">
-                            <label for="name" class="col-md-2 col-form-label text-md-right">Name</label>
-                            <div class="col-md-10">
-                                <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    required>
-                                @error('name')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="parent_id" class="col-md-2 col-form-label text-md-right">Parent</label>
-                            <div class="col-md-10">
-                                <select name="parent_id" id="parent_id"
-                                    class="form-control @error('parent_id') is-invalid @enderror">
-                                    <option value="">Select a parent category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $category->parent_id == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('parent_id')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="description" class="col-md-2 col-form-label text-md-right">Description</label>
-                            <div class="col-md-10">
-                                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" required>{{ old('description') }}</textarea>
-                                @error('description')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="image" class="col-md-2 col-form-label text-md-right">Image</label>
-                            <div class="col-md-10">
-                                <input type="file" name="image" id="image"
-                                    class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}">
-                                @error('image')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="status" class="col-md-2 col-form-label text-md-right">Status</label>
-                            <div class="col-md-10">
-                                <select name="status" id="status"
-                                    class="form-control @error('status') is-invalid @enderror">
-                                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
-                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                                </select>
-                                @error('status')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-10 offset-md-2">
-                                <button type="submit" class="btn btn-primary">Create</button>
-                            </div>
-                        </div>
-                    </form>
+<x-app-layout>
+    <div class="container mx-auto py-8 px-4 md:px-8">
+        <x-form.breadcrumb :items="['Home', 'Categories', 'Create']" :routes="['/', '/categories', '/categories/create']" />
+        <x-alert />
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Create Category</h1>
+        <div class="max-w-5xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-4">
+                    <x-form.label for="name" :value="__('Name')" />
+                    <x-form.input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required autofocus />
                 </div>
-            </div>
+                <div class="mb-4">
+                    <x-form.label for="description" :value="__('Description')" />
+                    <x-form.textarea id="description" name="description" class="mt-1 block w-full">{{ old('description') }}</x-form.textarea>
+                </div>
+                <div class="mb-4">
+                    <x-form.label for="slug" :value="__('Slug')" />
+                    <x-form.input id="slug" name="slug" type="text" class="mt-1 block w-full" :value="old('slug')" />
+                </div>
+                <div class="mb-4">
+                    <x-form.label for="image" :value="__('Image')" />
+                    <x-form.input id="image" name="image" type="file" class="mt-1 block w-full" />
+                </div>
+                <div class="mb-4">
+                    <x-form.label for="parent_id" :value="__('Parent Category')" />
+                    <select id="parent_id" name="parent_id" class="form-select mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="">Select a parent category</option>
+                        @foreach ($categories as $parentCategory)
+                            <option value="{{ $parentCategory->id }}" @selected(old('parent_id') == $parentCategory->id)>{{ $parentCategory->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <x-form.label for="status" :value="__('Status')" />
+                    <select id="status" name="status" class="form-select mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="active" @selected(old('status') == 'active')>Active</option>
+                        <option value="inactive" @selected(old('status') == 'inactive')>Inactive</option>
+                    </select>
+                </div>
+                <div class="flex justify-end">
+                    <x-form.button class="bg-blue-600 hover:bg-blue-700">
+                        {{ __('Create') }}
+                    </x-form.button>
+                </div>
+            </form>
         </div>
     </div>
-@endsection
+</x-app-layout>

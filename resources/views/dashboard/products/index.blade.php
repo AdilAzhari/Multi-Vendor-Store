@@ -25,9 +25,18 @@
                     class="form-select mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                     <option value="">Select a status</option>
                     <option value="">All</option>
-                    <option value="active" @selected(request('status') == 'active')>Active</option>
+                    <option value="draft" @selected(request('status') == 'draft')>Draft</option>
                     <option value="published" @selected(request('status') == 'published')>Published</option>
                     <option value="archived" @selected(request('status') == 'archived')>Archived</option>
+                </select>
+            </div>
+            <div class="md:w-40">
+                <select name="store_id"
+                    class="form-select mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    <option value="">Select a store</option>
+                    @foreach ($stores as $store)
+                        <option value="{{ $store->id }}" @selected(request('store_id') == $store->id)>{{ $store->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <button type="submit"
@@ -35,6 +44,7 @@
                 Search
             </button>
         </form>
+
         <div class="max-w-6xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -54,13 +64,16 @@
                     </thead>
                     <tbody>
                         @forelse ($products as $product)
-                            <tr class="border-b dark:border-gray-700 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800">
+                            <tr
+                                class="border-b dark:border-gray-700 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800">
                                 <td class="px-4 py-3">{{ $product->id }}</td>
                                 <td class="px-4 py-3">
-                                    <img src="{{ asset('uploads/products/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded-full">
+                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                        alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded-full">
                                 </td>
                                 <td class="px-4 py-3">
-                                    <a href="{{ route('front.products.show', $product) }}" class="text-blue-600 hover:underline">{{ $product->name }}</a>
+                                    <a href="{{ route('front.products.show', $product) }}"
+                                        class="text-blue-600 hover:underline">{{ $product->name }}</a>
                                 </td>
                                 <td class="px-4 py-3">{{ $product->category ? $product->category->name : 'N/A' }}</td>
                                 <td class="px-4 py-3">
