@@ -14,14 +14,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     @stack('styles')
 </head>
 
 <body class="hold-transition sidebar-mini">
-    {{-- <div class="wrapper">
+    <div class="wrapper">
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -207,8 +207,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                 </div>
 
-            {{-- @include('layouts.partials.nav') --}}
-            <x-nav />
+            @include('layouts.partials.nav')
             </div>
             <!-- /.sidebar -->
         </aside>
@@ -262,7 +261,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
             reserved.
         </footer>
-    </div> --}}
+    </div>
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->

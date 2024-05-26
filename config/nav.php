@@ -8,11 +8,6 @@ return [
         'active' => 'dashboard',
     ],
     [
-        'icon' => 'nav-icon fas fa-users',
-        'title' => 'Users',
-        // 'route' => 'dashboard.users.index',
-    ],
-    [
         'icon' => 'nav-icon fas fa-list',
         'title' => 'Categories',
         'route' => 'dashboard.categories.index',

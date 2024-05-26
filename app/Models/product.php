@@ -32,4 +32,14 @@ class product extends Model
     {
         return $this->belongsTo(Store::class);
     }
+    public function scopeFilter($query, $filters)
+    {
+        return $query->when($filters['name'] ?? null, function ($query, $name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        })->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status', $status);
+        })->when($filters['store_id'] ?? null, function ($query, $storeId) {
+            $query->where('store_id', $storeId);
+        });
+    }
 }

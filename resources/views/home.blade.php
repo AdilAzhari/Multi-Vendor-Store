@@ -16,7 +16,7 @@
                 class="px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-white hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring ring-green-300 transition ease-in-out duration-150">
                 Products
             </a>
-            <a href="{{ route('dashboard.categories.index') }}"
+            <a href="{{ route('categories.index') }}"
                 class="px-4 py-2 bg-yellow-600 border border-transparent rounded-md font-semibold text-white hover:bg-yellow-500 active:bg-yellow-700 focus:outline-none focus:border-yellow-700 focus:ring ring-yellow-300 transition ease-in-out duration-150">
                 Categories
             </a>

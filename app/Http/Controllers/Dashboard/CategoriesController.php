@@ -41,15 +41,15 @@ class CategoriesController extends Controller
             'slug' => str::slug($request->name)
         ]);
         Category::create($request->all());
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category added successfully');
+        return redirect()->route('categories.index')->with('success', 'Category added successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        return view('dashboard.categories.show', compact('category'));
     }
 
     /**
@@ -78,7 +78,7 @@ class CategoriesController extends Controller
             'parent_id' => $request->parent_id,
             'slug' => $request->slug,
         ]);
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully');
+        return redirect()->route('categories.index')->with('info', 'Category updated successfully');
     }
 
     /**
@@ -87,7 +87,7 @@ class CategoriesController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('categories.index')->with('Info', 'Category deleted and Trashed successfully');
     }
 
     public function trash(){
@@ -99,7 +99,7 @@ class CategoriesController extends Controller
      */
     public function restore(string $id){
         category::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category restored successfully');
+        return redirect()->route('categories.index')->with('Warning', 'Category restored from trash successfully.');
     }
     /**
      * Remove the specified resource from storage.
@@ -110,6 +110,6 @@ class CategoriesController extends Controller
             unlink(public_path('uploads/categories/' . $category->image));
         }
         $category->forceDelete();
-        return redirect()->route('dashboard.categories.trash')->with('success', 'Category deleted successfully');
+        return redirect()->route('categories.trash')->with('Danger', 'Category permanently deleted.');
     }
 }

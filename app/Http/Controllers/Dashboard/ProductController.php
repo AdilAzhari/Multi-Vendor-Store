@@ -8,6 +8,7 @@ use App\Http\Requests\StoreproductRequest;
 use App\Http\Requests\UpdateproductRequest;
 use App\Models\Category;
 use App\Models\Store;
+use Illuminate\Http\Request;
 use illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -15,10 +16,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = product::with('category', 'store')->latest()->paginate(10);
-        return view('dashboard.products.index', compact('products'));
+        $filters = $request->only(['name', 'status', 'store_id']);
+        $stores = Store::all();
+        $products = product::with('category', 'store')->filter($filters)
+            ->latest()->paginate(10);
+        return view('dashboard.products.index', compact('products', 'stores'));
     }
 
     /**
@@ -40,7 +44,7 @@ class ProductController extends Controller
         $request->merge([
             'slug' => str::slug($request->name)
         ]);
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image->store('products', 'public');
             $request->merge([
@@ -79,8 +83,8 @@ class ProductController extends Controller
         $request->merge([
             'slug' => str::slug($request->name)
         ]);
-        $product->update($request->all());
-        return redirect()->route('products.index')->with('success', 'Product updated successfully');
+        $product->update($request->validated());
+        return redirect()->route('products.index')->with('info', 'Product updated successfully');
     }
 
     /**

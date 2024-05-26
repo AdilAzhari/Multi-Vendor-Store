@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 require __DIR__ . '/auth.php';
+
 Route::get('contact', [homeController::class, 'contact'])->name('contact');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -32,9 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/dashboard', DashboardController::class);
 
     Route::get('dashboard', [CategoriesController::class, 'index'])->name('dashboard');
-    // Route::get('dashboards', CategoriesList::class)->name('dashboards');
 
-    Route::controller(CategoriesController::class)->prefix('categories')->name('dashboard.categories.')->group(function () {
+    Route::controller(CategoriesController::class)->prefix('categories')->name('categories.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -48,20 +48,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('{category}/delete', 'delete')->name('delete');
         Route::get('categories/trash', 'trash')->name('trash');
     });
+
     Route::resource('products', ProductController::class, ['names' => [
         'create' => 'dashboard.products.create' // Custom name for show method
     ]]);
+
     Route::controller(ProductController::class)->prefix('product')->name('products.')->group(function () {
         Route::get('/trash', 'trash')->name('trash');
         Route::get('/create', 'create')->name('create');
-
         Route::put('products/{id}/restore', 'restore')->name('restore');
         Route::delete('products/{id}/forceDelete', 'forceDelete')->name('forceDelete');
-        // Route::post('/orde/srs', 'store');
     });
+
     Route::controller(ProductController::class)->prefix('front/products')->name('front.products.')->group(function () {
         Route::get('/{product}', 'show')->name('show');
-        // Route::post('/orders', 'store');
     });
     Route::resource('stores', StoresController::class);
 });
