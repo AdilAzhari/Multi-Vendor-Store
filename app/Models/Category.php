@@ -27,17 +27,19 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
-
-    public function scopeStatus( $status = 1){
-        return $this->where('status', $status);
+    public function scopeActive()
+    {
+        return $this->where('status', 1);
     }
-    public function scopeInactive(){
+    public function scopeInactive()
+    {
         return $this->where('status', 0);
     }
-    public function scopeFilter($query, array $filters){
-        $query->when($filters['name'] ?? false, function($query, $search){
-            return $query->where('name', 'like', '%'.$search.'%');
-        })->when($filters['status'] ?? false, function($query, $status){
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['name'] ?? false, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->when($filters['status'] ?? false, function ($query, $status) {
             return $query->where('status', $status);
         });
     }
