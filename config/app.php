@@ -128,4 +128,5 @@ return [
     'aliases' => [
         'Currency' => App\Helpers\Currency::class,
     ],
+
 ];

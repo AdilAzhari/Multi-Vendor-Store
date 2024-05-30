@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\StoresController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Http\Controllers\StoreController;
@@ -48,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('{category}/forceDelete', 'forceDelete')->name('forceDelete');
         Route::get('{category}/delete', 'delete')->name('delete');
         Route::get('categories/trash', 'trash')->name('trash');
-    });
+    })->middleware('Login');
 
     Route::resource('products', ProductController::class, ['names' => [
         'create' => 'dashboard.products.create' // Custom name for show method
@@ -73,7 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('index/products', [FrontProductController::class, 'index'])->name('front.products.index');
     Route::get('index/products/{product:slug}', [FrontProductController::class, 'show'])->name('front.products.show');
 
-
+    Route::resource('cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
 
 
 });

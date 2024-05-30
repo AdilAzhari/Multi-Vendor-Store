@@ -46,9 +46,14 @@ class User extends Authenticatable
     }
     public function profile()
     {
-        return $this->hasOne(Profile::class)->withDefault( function ($profile) {
+        return $this->hasOne(Profile::class)->withDefault(function ($profile) {
             $profile->first_name = 'Guest';
             $profile->last_name = 'User';
         });
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
     }
 }

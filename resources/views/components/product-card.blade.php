@@ -32,7 +32,7 @@
         <div class="price">
             <span>{{ $product->FormattedPrice }}</span>
             @if ($product->compare_price)
-                <span class="discount-price">{{ $product->FormattedComparePrice }}</span>
+                <span class="discount-price">{{ Currency::format($product->FormattedComparePrice,'') }}</span>
             @endif
         </div>
     </div>

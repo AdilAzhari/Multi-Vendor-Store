@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['Login', CheckLogin::class]);
+        $middleware->alias(['Auth-login', CheckLogin::class]);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {

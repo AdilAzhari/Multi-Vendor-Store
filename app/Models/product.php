@@ -66,6 +66,7 @@ class product extends Model
     {
         return $value ?? 'draft';
     }
+
     public function getImageUrlAttribute($value)
     {
         return $value ?  $value : 'dist/img/default-150x150.png';
