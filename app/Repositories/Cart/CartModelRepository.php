@@ -3,43 +3,57 @@
 namespace App\Repositories\Cart;
 
 use App\Models\cart;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\product;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CartModelRepository implements CartsRepository
 {
+    protected $items;
+    public function __construct()
+    {
+        $this->items = collect([]);
+    }
     public function get()
     {
-        return cart::with('product')->where('cookie_id', $this->getCookieId())->get();
+        if (!$this->items->count()) {
+            $this->items = cart::with('product')->Cookie($this->getCookieId())->get();
+        }
+        return $this->items;
     }
     public function delete(product $product)
     {
-        return Cart::where('cookie_id', $this->getCookieId())->where('product_id', $product->id)
+        return Cart::Cookie($this->getCookieId())->where('product_id', $product->id)
             ->delete();
     }
     public function add(product $product, $quantity = 1)
     {
-        $item = cart::where('cookie_id', $this->getCookieId())
+        $item = cart::Cookie($this->getCookieId())
             ->where('product_id', $product->id)
             ->where('user_id', auth()->id())
             ->first();
 
         if ($item) {
-            $this->update($product,$quantity);
-        }if(!$item){
-            return Cart::updateOrCreate([
+            $this->update($product, $quantity);
+            return $item->increment('quantity', $quantity);
+        }
+        if (!$item) {
+            $cart = Cart::Create([
                 'user_id' => auth()->id(),
                 'product_id' => $product->id,
                 'quantity' => $quantity,
                 'cookie_id' => $this->getCookieId(),
             ]);
+            $this->get()->push($cart);
+            return $cart;
         }
-        return $item->increment('quantity',$quantity);
     }
-    public function update(product $product,$quantity = 1)
+    public function update(product $product, $quantity = 1)
     {
-        return Cart::where('cookie_id', $this->getCookieId())->where('product_id', $product->id)
+        return Cart::Cookie($this->getCookieId())->where('product_id', $product->id)
             ->update([
                 'quantity' => request()->quantity,
             ]);
@@ -49,13 +63,42 @@ class CartModelRepository implements CartsRepository
     }
     public function total(): float
     {
-        return (float) Cart::where('cookie_id', $this->getCookieId())
-            ->join('products', 'products.id', '=', 'carts.product_id')
-            ->selectRaw('SUM(carts.quantity * products.price) as total')
-            ->value('total');
+        return $this->get()->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+    }
+    public function storeOrder($request)
+    {
+        DB::beginTransaction();
+        try {
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'order_number' => order::getNextOrderNumberAttribute(),
+                'payment_method' => $request->payment_method,
+                'store_id' => $request->store_id,
+                'payment_status' => 'unpaid',
+            ]);
+            foreach ($this->get() as $item) {
+                OrderItem::create([
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                    'product_name' => $item->product->name,
+                    'order_id' => $order->id,
+                ]);
+            }
+            foreach ($request->post('address') as $type => $address) {
+                $order->addresses()->create([
+                    'type' => $type,
+                ]);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
-    protected function getCookieId()
+    public function getCookieId()
     {
         $cookie_id = Cookie::get('cart_id');
         if (!$cookie_id) {

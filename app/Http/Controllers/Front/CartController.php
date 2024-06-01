@@ -30,7 +30,7 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CartStoreRequest $request)
+    public function store(CartStoreRequest $request, product $product)
     {
         $product = product::findOrFail($request->product_id);
         $this->cartModelRepository->add($product, $request->quantity);

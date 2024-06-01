@@ -2,18 +2,21 @@
 
 namespace App\View\Components;
 
+use App\Facades\Cart;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class formtextarea extends Component
+class CartMenu extends Component
 {
+    public $items, $total;
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        //
+        $this->items = Cart::get();
+        $this->total = Cart::total();
     }
 
     /**
@@ -21,6 +24,6 @@ class formtextarea extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.form.textarea');
+        return view('components.cart-menu');
     }
 }

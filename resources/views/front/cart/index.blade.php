@@ -29,11 +29,21 @@
                 <div class="cart-list-title">
                     <div class="row">
                         <div class="col-lg-1 col-md-1 col-12"></div>
-                        <div class="col-lg-4 col-md-3 col-12"><p>Product Name</p></div>
-                        <div class="col-lg-2 col-md-2 col-12"><p>Quantity</p></div>
-                        <div class="col-lg-2 col-md-2 col-12"><p>Subtotal</p></div>
-                        <div class="col-lg-2 col-md-2 col-12"><p>Discount</p></div>
-                        <div class="col-lg-1 col-md-2 col-12"><p>Remove</p></div>
+                        <div class="col-lg-4 col-md-3 col-12">
+                            <p>Product Name</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>Quantity</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>Subtotal</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>Discount</p>
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-12">
+                            <p>Remove</p>
+                        </div>
                     </div>
                 </div>
                 <!-- End Cart List Title -->
@@ -47,7 +57,8 @@
                                         src="{{ $item->product->image }}" alt="#"></a>
                             </div>
                             <div class="col-lg-4 col-md-3 col-12">
-                                <h5 class="product-name"><a href="{{ route('front.products.show', $item->product->slug) }}">
+                                <h5 class="product-name"><a
+                                        href="{{ route('front.products.show', $item->product->slug) }}">
                                         {{ $item->product->name }}</a></h5>
                                 <p class="product-des">
                                     <span><em>Type:</em> {{ $item->product->type }}</span>
@@ -56,11 +67,12 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
                                 <div class="count-input">
-                                    <input class="form-control" value="{{ $item->quantity }}" />
+                                    <input class="form-control item-quantity" data-id="{{ $item->id }}"
+                                        value="{{ $item->quantity }}" />
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
-                                <p>{{ Currency::FORMAT($item->quantity * $item->product->price, '')  }}</p>
+                                <p>{{ Currency::FORMAT($item->quantity * $item->product->price, '') }}</p>
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
                                 <p>{{ Currency::FORMAT(0, '') }}</p>
@@ -111,5 +123,11 @@
             </div>
         </div>
     </div>
-
+    @push('scripts')
+        <script>
+            const csrf_token = "{{ csrf_token() }}"
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    @endpush
+    @vite('js/cart.js')
 </x-front-layout>

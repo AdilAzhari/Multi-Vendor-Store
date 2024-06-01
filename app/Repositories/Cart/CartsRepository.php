@@ -13,5 +13,6 @@ interface CartsRepository
     public function add(product $product, $quantity);
     public function update(product $product);
     public function empty();
+    public function storeOrder($request);
     public function total(): float;
 }

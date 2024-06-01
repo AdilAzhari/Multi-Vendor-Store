@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\StoresController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Front\CartController;
+use App\Http\Controllers\front\CheckoutController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Http\Controllers\StoreController;
@@ -75,6 +76,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('index/products/{product:slug}', [FrontProductController::class, 'show'])->name('front.products.show');
 
     Route::resource('cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
-
+    Route::controller(CheckoutController::class)->group(function () {
+        Route::get('/checkout', 'create')->name('checkout');
+        Route::post('/checkout', 'store')->name('checkout.store');
+    });
 
 });

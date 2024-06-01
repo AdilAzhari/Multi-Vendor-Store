@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\cookieScope;
 use App\Observers\CartObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,5 +27,9 @@ class cart extends Model
     ];
     public function product(){
         return $this->belongsTo(product::class);
+    }
+    public function scopeCookie($query, $cookie_id)
+    {
+        return $query->where('cookie_id', $cookie_id)->first();
     }
 }
