@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\OrderObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(OrderObserver::class)]
 class Order extends Model
 {
     use HasFactory;
@@ -42,9 +45,10 @@ class Order extends Model
     public static function getNextOrderNumberAttribute()
     {
         $year = now()->format('Y');
-        $number = Order::whereYear('created_at', $year)->max('number');
+        $number = Order::whereYear('created_at', $year)->max('order_number');
         if($number){
-            return 'ORD-'.str_pad($number + 1, 5, '0', STR_PAD_LEFT);
+            $number = explode('-', $number)[1];
+            return 'ORD-' . str_pad($number, 5, '0', STR_PAD_LEFT);
         }
         return 'ORD-'.str_pad(1, 5, '0', STR_PAD_LEFT);
     }
@@ -70,7 +74,7 @@ class Order extends Model
     {
         return ucfirst(str_replace('_', ' ', $this->payment));
     }
-    public function address(){
+    public function addresses(){
         return $this->hasMany(OrderAddress::class);
     }
     public function billingAddress()

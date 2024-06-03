@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Events\OrderEvent;
 use App\Http\Controllers\Controller;
 use App\Models\product;
 use Illuminate\Http\Request;
@@ -13,12 +14,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        event(new OrderEvent());
         $products = product::with('category')->active()
             ->latest()
             ->take(8)
             ->get();
 
-        return view('front.home', compact('products'));
+        // return view('front.home', compact('products'));
     }
 
     /**

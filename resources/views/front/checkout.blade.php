@@ -21,6 +21,7 @@
         </div>
         <!-- End Breadcrumbs -->
     </x-slot:breadcrumb>
+    <x-alert />
     <!--====== Checkout Form Steps Part Start ======-->
 
     <section class="checkout-wrapper section">
@@ -114,7 +115,8 @@
                                             <div class="col-md-6">
                                                 <div class="single-form form-default">
                                                     <label>Region/State</label>
-                                                    <div class="select-items">
+                                                    <div class="form-input form">
+
                                                         <x-form.input name="address[billing][state]"
                                                             placeholder="State" />
                                                     </div>
@@ -219,7 +221,8 @@
                                             <div class="col-md-6">
                                                 <div class="single-form form-default">
                                                     <label>Region/State</label>
-                                                    <div class="select-items">
+                                                        <div class="form-input form">
+
                                                         <x-form.input name="address[billing][state]"
                                                         placeholder="State" />                                                    </div>
                                                 </div>

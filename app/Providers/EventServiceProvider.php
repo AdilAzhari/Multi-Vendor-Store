@@ -3,17 +3,20 @@
 namespace App\Providers;
 
 use App\Events\OrderEvent;
-use App\Listeners\DeduckProductQuantityListener;
 use App\Listeners\DeductProductQuantityListener;
 use App\Listeners\EmptyCartListener;
-use Illuminate\Foundation\Exceptions\Renderer\Listener;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class EventServiceProvider extends ServiceProvider
 {
+    protected $listen = [
+        OrderEvent::class => [
+            DeductProductQuantityListener::class,
+            EmptyCartListener::class,
+        ],
+    ];
     /**
-     * Register any application services.
+     * Register services.
      */
     public function register(): void
     {
@@ -21,9 +24,10 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      */
     public function boot(): void
     {
+        //
     }
 }

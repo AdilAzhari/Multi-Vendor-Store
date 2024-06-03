@@ -11,7 +11,7 @@ class storeCheckoutRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class storeCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // 'first_name' => ['required', 'string', 'max:255'],
+            // 'last_name' => ['required', 'string', 'max:255'],
+            // 'email' => ['string', 'email', 'max:255'],
+            // 'phone' => ['required', 'string', 'max:255'],
+            // 'address' => ['required', 'string', 'max:255'],
+            // 'city' => ['required', 'string', 'max:255'],
+            // 'country' => ['required', 'string', 'max:255'],
+            // 'state' => ['required', 'string', 'max:255'],
+            // 'zip' => ['required', 'string', 'max:255'],
+            // 'payment_method' => ['required', 'string', 'max:255'],
         ];
     }
 }

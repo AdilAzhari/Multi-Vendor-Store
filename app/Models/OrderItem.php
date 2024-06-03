@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class OrderItem extends Pivot
 {
     use HasFactory;
+    protected $table = 'order_items';
     public $timestamp = false;
     protected $fillable = [
         'order_id',
@@ -15,6 +16,7 @@ class OrderItem extends Pivot
         'quantity',
         'price',
         'product_name',
+        'options'
     ];
     public $incrementing = true;
     public function product()

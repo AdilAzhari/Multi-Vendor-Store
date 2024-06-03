@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\front;
 
+use App\Events\OrderEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\storeCheckoutRequest;
+use App\Models\Order;
 use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartsRepository;
 use Illuminate\Http\Request;
@@ -12,26 +15,31 @@ class CheckoutController extends Controller
 {
     public function create(CartModelRepository $cartModelRepository)
     {
+        if($cartModelRepository->get()->isEmpty())
+        {
+            return redirect()->route('cart.index');
+        }
         return view('front.checkout', [
             'cart' => $cartModelRepository,
             'countries' => Countries::getNames(),
         ]);
     }
 
-    public function store(Request $request, CartModelRepository $cartModelRepository)
+    public function store(storeCheckoutRequest $storeCheckoutRequest, CartModelRepository $cartModelRepository)
     {
-        $request->validate([
-            'shipping_fullname' => 'required',
-            'shipping_address' => 'required',
-            'shipping_city' => 'required',
-            'shipping_state' => 'required',
-            'shipping_zipcode' => 'required',
-            'shipping_phone' => 'required',
-            'payment_method' => 'required',
-        ]);
 
-        $order = $cartModelRepository->storeOrder($request);
+        $storeCheckoutRequest->validated();
 
-        return redirect()->route('front.confirmation.index', $order->number);
+        $order = $cartModelRepository->storeOrder($storeCheckoutRequest);
+        // $this->empty();
+        // dd($order);
+        // return view('front.confirmation', compact('order'));
+        return redirect()->route('cart')->with('success', 'Order has been placed successfully');
+    }
+
+    public function confirmation($orderNumber)
+    {
+        $order = Order::where('order_number', $orderNumber)->first();
+        return view('front.confirmation', compact('order'));
     }
 }

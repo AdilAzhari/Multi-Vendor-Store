@@ -18,9 +18,8 @@ return new class extends Migration
             $table->foreignId('store_id')->nullable()->constrained()->cascadeOnDelete();
             $table->enum('status', ['pending', 'processing', 'completed', 'decline'])->default('pending');
             $table->enum('payment_method', [
-                'cash_on_delivery', 'paypal', 'stripe', 'razorpay', 'paystack',
-                'flutterwave', 'voguepay', 'paytm', 'payu', 'instamojo', 'mollie', 'payfast',
-                'payhere', 'paynow', 'paystack', 'payu', 'paytm', 'stripe', 'razorpay',
+                'cash_on_delivery', 'paypal', 'paystack',
+                'payu', 'paytm', 'stripe', 'razorpay',
                 'flutterwave', 'voguepay', 'mollie', 'payfast', 'payhere', 'paynow', 'instamojo'
             ])
                 ->default('cash_on_delivery');

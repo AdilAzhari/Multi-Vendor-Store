@@ -2,10 +2,14 @@
 
 namespace App\Repositories\Cart;
 
+use App\Events\OrderEvent;
+use App\Listeners\DeduckProductQuantityListener;
+use App\Listeners\EmptyCartListener;
 use App\Models\cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\product;
+use Illuminate\Foundation\Exceptions\Renderer\Listener;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -60,6 +64,7 @@ class CartModelRepository implements CartsRepository
     }
     public function empty()
     {
+        return Cart::Cookie($this->getCookieId())->delete();
     }
     public function total(): float
     {
@@ -69,35 +74,44 @@ class CartModelRepository implements CartsRepository
     }
     public function storeOrder($request)
     {
+        $items = $this->get()->groupBy('store_id');
+
         DB::beginTransaction();
         try {
-            $order = Order::create([
-                'user_id' => auth()->id(),
-                'order_number' => order::getNextOrderNumberAttribute(),
-                'payment_method' => $request->payment_method,
-                'store_id' => $request->store_id,
-                'payment_status' => 'unpaid',
-            ]);
-            foreach ($this->get() as $item) {
-                OrderItem::create([
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->product->price,
-                    'product_name' => $item->product->name,
-                    'order_id' => $order->id,
+            foreach ($items as $store_id => $carts) {
+                // dd($store_id, $carts);
+                $order = Order::create([
+                    'payment_method' => 'stripe', //$request->payment_method,
+                    'store_id' => 1 //$store_id,
                 ]);
+                foreach ($carts as $item) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $item->product_id,
+                        'product_name' => $item->product->name,
+                        'price' => $item->product->price,
+                        'quantity' => $item->quantity,
+                    ]);
+                }
+                // foreach ($request->post('address') as $type => $addresses) {
+                //     $addresses['type'] = $type;
+                //     $order->addresses()->create($addresses);
+                // }
+                foreach ($request->post('address') as $type) {
+                    // $order->addresses()->create([
+                    //     'type' => $type,
+                    // ]);
+                }
             }
-            foreach ($request->post('address') as $type => $address) {
-                $order->addresses()->create([
-                    'type' => $type,
-                ]);
-            }
-            DB::commit();
-            return $order;
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
 
+            $this->empty();
+            DB::commit();
+            event(new OrderPlaced());
+            // dd("Order has been placed successfully");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function getCookieId()

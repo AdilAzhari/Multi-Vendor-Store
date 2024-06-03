@@ -25,7 +25,8 @@ class CategoryFactory extends Factory
             'image' => $this->faker->imageUrl,
             'name' => $name,
             'slug' => str::slug($name),
-            'parent_id' => Category::inRandomOrder()->first()->id,
+            'parent_id' => 1,
+            // Category::inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
