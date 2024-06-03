@@ -3,34 +3,27 @@
 namespace App\Listeners;
 
 use App\Events\OrderEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Facades\Cart;
+use App\Models\product;
+use App\Repositories\Cart\CartModelRepository;
+use Illuminate\Support\Facades\DB;
 
 class DeductProductQuantityListener
 {
-    public static function listen()
-    {
-        return [
-            OrderEvent::class => [
-                self::class,
-            ],
-        ];
-    }
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Handle the event.
      */
     public function handle(OrderEvent $event): void
     {
-        info('Deduct Product Quantity');
-        dd('Deduct Product Quantity');
+
+        foreach (Cart::get() as $item) {
+            // dd($item->product_id);
+            product::where('id', $item->product_id)
+                ->update([
+                    'quantity' => DB::raw('quantity - ' . $item->quantity)
+                ]);
+        }
     }
 
 }

@@ -3,13 +3,10 @@
 namespace App\Repositories\Cart;
 
 use App\Events\OrderEvent;
-use App\Listeners\DeduckProductQuantityListener;
-use App\Listeners\EmptyCartListener;
 use App\Models\cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\product;
-use Illuminate\Foundation\Exceptions\Renderer\Listener;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -104,10 +101,9 @@ class CartModelRepository implements CartsRepository
                 }
             }
 
-            $this->empty();
+            // $this->empty();
             DB::commit();
-            event(new OrderPlaced());
-            // dd("Order has been placed successfully");
+            event(new OrderEvent());
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;

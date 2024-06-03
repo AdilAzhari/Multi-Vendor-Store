@@ -11,8 +11,7 @@ use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
 
-// Route::view('/', 'welcome');
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 require __DIR__ . '/auth.php';
 

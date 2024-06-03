@@ -23,6 +23,7 @@ class product extends Model
         'rating',
         'featured',
         'status',
+        'quantity',
     ];
     public function category(): BelongsTo
     {

@@ -34,7 +34,7 @@ class CheckoutController extends Controller
         // $this->empty();
         // dd($order);
         // return view('front.confirmation', compact('order'));
-        return redirect()->route('cart')->with('success', 'Order has been placed successfully');
+        return redirect()->route('cart.index')->with('success', 'Order has been placed successfully');
     }
 
     public function confirmation($orderNumber)
