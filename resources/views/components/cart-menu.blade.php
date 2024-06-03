@@ -22,7 +22,7 @@
                     <div class="content">
                         <h4><a href="product-details.html">
                                {{ $item->product->name }}</a></h4>
-                        <p class="quantity">{{ $item->qantity }}x - <span class="amount">{{ currency::format($item->product->price,'') }}</span>
+                        <p class="quantity">{{ $item->qantity }}x - <span class="amount">{{  Currency::FORMAT($item->product->price,'') }}</span>
                         </p>
                     </div>
                 </li>

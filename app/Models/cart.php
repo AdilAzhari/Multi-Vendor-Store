@@ -32,4 +32,20 @@ class cart extends Model
     {
         return $query->where('cookie_id', $cookie_id)->first();
     }
+    public function getOptionsAttribute($value)
+    {
+        return json_decode($value);
+    }
+    public function setOptionsAttribute($value)
+    {
+        $this->attributes['options'] = json_encode($value);
+    }
+    public function getSubtotalAttribute()
+    {
+        return $this->quantity * $this->product->price;
+    }
+    public function getTotalAttribute()
+    {
+        return $this->sum('subtotal');
+    }
 }

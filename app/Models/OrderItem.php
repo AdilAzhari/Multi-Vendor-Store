@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class OrderItem extends Pivot
 {
     use HasFactory;
+    public $timestamp = false;
     protected $fillable = [
         'order_id',
         'product_id',

@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartsRepository;
 use Illuminate\Http\Request;
+use Symfony\Component\Intl\Countries;
 
 class CheckoutController extends Controller
 {
-    public function index(CartModelRepository $cartModelRepository)
+    public function create(CartModelRepository $cartModelRepository)
     {
         return view('front.checkout', [
             'cart' => $cartModelRepository,
+            'countries' => Countries::getNames(),
         ]);
     }
 

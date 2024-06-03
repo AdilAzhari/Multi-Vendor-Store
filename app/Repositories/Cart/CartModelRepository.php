@@ -93,9 +93,11 @@ class CartModelRepository implements CartsRepository
                 ]);
             }
             DB::commit();
+            return $order;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+
     }
 
     public function getCookieId()
