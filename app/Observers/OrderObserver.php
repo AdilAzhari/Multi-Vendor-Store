@@ -17,7 +17,6 @@ class OrderObserver
         // dd($or);
         $order->status = 'pending';
         $order->order_number = uniqid('ORD-') . '-' . now()->format('Y') . '-' . $order->id;
-        // $order->getNextOrderNumberAttribute();
         $order->user_id = auth()->id();
     }
 

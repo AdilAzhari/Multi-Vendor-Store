@@ -22,11 +22,11 @@ class storeCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'first_name' => ['required', 'string', 'max:255'],
+            // 'address[billing][first_name]' => ['required', 'string', 'max:255'],
             // 'last_name' => ['required', 'string', 'max:255'],
             // 'email' => ['string', 'email', 'max:255'],
-            // 'phone' => ['required', 'string', 'max:255'],
-            // 'address' => ['required', 'string', 'max:255'],
+            // 'phone_number' => ['required', 'string', 'max:255'],
+            // 'street_address' => ['required', 'string', 'max:255'],
             // 'city' => ['required', 'string', 'max:255'],
             // 'country' => ['required', 'string', 'max:255'],
             // 'state' => ['required', 'string', 'max:255'],

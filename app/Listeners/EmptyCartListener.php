@@ -3,24 +3,17 @@
 namespace App\Listeners;
 
 use App\Events\OrderEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Facades\Cart as FacadesCart;
+use App\Models\cart;
 
 class EmptyCartListener
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Handle the event.
      */
     public function handle(OrderEvent $event): void
     {
-        //
+        // FacadesCart::empty();
     }
 }

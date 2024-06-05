@@ -76,7 +76,6 @@ class CartModelRepository implements CartsRepository
         DB::beginTransaction();
         try {
             foreach ($items as $store_id => $carts) {
-                // dd($store_id, $carts);
                 $order = Order::create([
                     'payment_method' => 'stripe', //$request->payment_method,
                     'store_id' => 1 //$store_id,
@@ -90,20 +89,25 @@ class CartModelRepository implements CartsRepository
                         'quantity' => $item->quantity,
                     ]);
                 }
-                // foreach ($request->post('address') as $type => $addresses) {
-                //     $addresses['type'] = $type;
-                //     $order->addresses()->create($addresses);
-                // }
-                foreach ($request->post('address') as $type) {
-                    // $order->addresses()->create([
-                    //     'type' => $type,
-                    // ]);
+
+                foreach ($request->post('address') as $type => $address) {
+                    $order->addresses()->create([
+                        'type' => $type,
+                        'first_name' => $address['first_name'],
+                        'last_name' => $address['last_name'],
+                        'street_address' => $address['street_address'],
+                        'city' => 'Dhaka',
+                        'state' => 'Dhaka',
+                        'country' => $address['country'],
+                        'email' => $address['email'],
+                        'postal_code' => $address['postal_code'],
+                        'phone_number' => $address['phone_number'],
+                    ]);
                 }
             }
 
-            // $this->empty();
             DB::commit();
-            event(new OrderEvent());
+            event(new OrderEvent($order));
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;

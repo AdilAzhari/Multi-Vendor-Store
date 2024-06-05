@@ -33,7 +33,7 @@ class ProductFactory extends Factory
             'rating' => $this->faker->randomFloat(2, 1, 5),
             'featured' => rand(0,1),
             'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
-            // 'featured' => $this->faker->boolean(50),
+            'quantity' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

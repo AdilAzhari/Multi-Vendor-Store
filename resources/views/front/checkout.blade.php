@@ -45,7 +45,11 @@
                                                         <div class="col-md-6 form-input form">
                                                             <x-form.input name="address[billing][first_name]"
                                                                 placeholder="First Name" />
+                                                            @error('first_name')
+                                                                <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                                            @enderror
                                                         </div>
+
                                                         <div class="col-md-6 form-input form">
                                                             <x-form.input name="address[billing][last_name]"
                                                                 placeholder="Last Name" />
@@ -58,9 +62,7 @@
                                                     <label>Email Address</label>
                                                     <div class="form-input form">
                                                         <x-form.input name="address[billing][email]"
-                                                            placeholder="Email Address"
-                                                            type="email"
-                                                            />
+                                                            placeholder="Email Address" type="email" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -166,9 +168,7 @@
                                                     <label>Email Address</label>
                                                     <div class="form-input form">
                                                         <x-form.input name="address[Shipping][email]"
-                                                            placeholder="Email Address"
-                                                            type="email"
-                                                            />
+                                                            placeholder="Email Address" type="email" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -221,10 +221,11 @@
                                             <div class="col-md-6">
                                                 <div class="single-form form-default">
                                                     <label>Region/State</label>
-                                                        <div class="form-input form">
+                                                    <div class="form-input form">
 
                                                         <x-form.input name="address[billing][state]"
-                                                        placeholder="State" />                                                    </div>
+                                                            placeholder="State" />
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">

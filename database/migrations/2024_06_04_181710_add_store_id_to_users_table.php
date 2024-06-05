@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->unsignedSmallInteger('quantity')->default(0)->after('compare_price');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('store_id')->nullable()->constrained('stores')->onDelete('cascade');
         });
     }
 
@@ -21,8 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['store_id']);
+            $table->dropColumn('store_id');
         });
     }
 };
