@@ -32,7 +32,7 @@ class CheckoutController extends Controller
 
         $order = $cartModelRepository->storeOrder($storeCheckoutRequest);
 
-        return redirect()->route('cart.index')->with('success', 'Order has been placed successfully');
+        // return redirect()->route('cart.index')->with('success', 'Order has been placed successfully');
     }
 
     public function confirmation($orderNumber)

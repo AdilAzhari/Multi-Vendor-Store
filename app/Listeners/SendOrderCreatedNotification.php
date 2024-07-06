@@ -14,14 +14,23 @@ class SendOrderCreatedNotification
     public function handle(OrderEvent $event): void
     {
         $order = $event->order;
-        // dd($order->store_id);
-        $user = User::where('store_id', $order->store_id)->get();
-        if (!is_null($user)) {
-            // dd($user, $order);
-            Notification::send($user, new OrderCreatedNotification($order));
-        } else {
-            info('User not found');
-        }
 
+        try {
+            if (is_null($order)) {
+                throw new \Exception('Order is null');
+            }
+
+            info('Order ID: ' . $order->id . ', Store ID: ' . $order->store_id);
+
+            $user = User::where('store_id', $order->store_id)->get();
+
+            if ($user->isEmpty()) {
+                throw new \Exception('No users found for store_id: ' . $order->store_id);
+            }
+
+            Notification::send($user, new OrderCreatedNotification($order));
+        } catch (\Exception $e) {
+            info('Error sending notification: ' . $e->getMessage());
+        }
     }
 }

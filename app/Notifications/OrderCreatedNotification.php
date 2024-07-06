@@ -26,7 +26,7 @@ class OrderCreatedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -46,6 +46,17 @@ class OrderCreatedNotification extends Notification
             ->line('Thank you for using our application!');
     }
 
+    public function toDatabase(object $notifiable): array
+    {
+        $address = $this->order->billingAddress;
+        return [
+            'order_number' => $this->order->order_number,
+            'total' => $this->order->total,
+            'icon' => 'fa fa-shopping-cart',
+            'body' => 'A new Order $this->order->order_number has been placed successfully created by ' . $notifiable->first_name . ' ' . $notifiable->last_name . ' from' .  $this->order->billingAddress->getFullAddressAttribute(),
+            'url' => url('/'),
+        ];
+    }
     /**
      * Get the array representation of the notification.
      *
