@@ -28,12 +28,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/logout', Logout::class)->name('logout');
 
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/dashboard', 'index')->name('index');
+        Route::get('/dashboard', 'index')->name('dashboard');
     });
 
-    // Admin Routes
-
-    Route::get('dashboard', [CategoriesController::class, 'index'])->name('dashboard');
+    // // Admin Routes
 
     Route::controller(CategoriesController::class)->prefix('categories')->name('categories.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -64,17 +62,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(ProductController::class)->prefix('front/products')->name('front.products.')->group(function () {
         Route::get('/{product}', 'show')->name('show');
     });
+
     Route::resource('stores', StoresController::class);
 
 
 
 
-    // Front Routes
+    // // Front Routes
 
-    Route::resource('/dashboard', DashboardController::class);
-
-    Route::get('index/products', [FrontProductController::class, 'index'])->name('front.products.index');
-    Route::get('index/products/{product:slug}', [FrontProductController::class, 'show'])->name('front.products.show');
+    Route::get('front/products', [FrontProductController::class, 'index'])->name('front.products.index');
+    Route::get('front/products/{product:slug}', [FrontProductController::class, 'show'])->name('front.products.show');
 
     Route::resource('cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::controller(CheckoutController::class)->group(function () {

@@ -1,22 +1,21 @@
 <?php
 
-namespace App\View\Components\Dashoard;
+namespace App\View\Components\Dashboard;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class notificationMenue extends Component
+class NotificationsMenu extends Component
 {
-
     /**
      * Create a new component instance.
      */
     public function __construct(public $notifications, public $count)
     {
-        $this->notifications = Auth::user()->unreadNotifications;
-        $this->count = Auth::user()->unreadNotifications->count();
+        $user = auth()->user();
+        $this->notifications = $user->notifications()->latest()->take($count)->get();
+        $this->count = $user->unreadNotifications->count();
     }
 
     /**
@@ -24,6 +23,6 @@ class notificationMenue extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.dashoard.notification-menue');
+        return view('components.dashboard.notifications-menu');
     }
 }

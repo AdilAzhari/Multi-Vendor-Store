@@ -30,7 +30,7 @@
         <div class="mb-12">
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Featured Products</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @foreach($featuredProducts as $product)
+                {{-- @foreach($featuredProducts as $product)
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
                         <img src="{{ asset('uploads/products/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-lg">
                         <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mt-4">{{ $product->name }}</h3>
@@ -38,7 +38,7 @@
                         <a href="{{ route('front.products.show', $product) }}"
                             class="mt-4 inline-block text-blue-600 hover:underline">View Product</a>
                     </div>
-                @endforeach
+                @endforeach --}}
             </div>
         </div>
 

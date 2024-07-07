@@ -15,7 +15,7 @@
         @endif
         <div class="dropdown-divider"></div>
         @foreach ($notifications as $notification)
-            {{-- <a href="{{ route('notifications.show', $notification->id) }}" class="dropdown-item"> --}}
+            <a href="{{ route('notifications.show', $notification->id) }}" class="dropdown-item">
                 <a href="{{ $notification->data['url'] }}" class="dropdown-item">
 
                 <i class="{{ $notification->data['icon'] }}"></i> {{ $notification->data['body'] }}

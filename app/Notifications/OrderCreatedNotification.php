@@ -49,6 +49,7 @@ class OrderCreatedNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         $address = $this->order->billingAddress;
+
         return [
             'order_number' => $this->order->order_number,
             'total' => $this->order->total,
