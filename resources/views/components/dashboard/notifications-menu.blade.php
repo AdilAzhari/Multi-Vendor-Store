@@ -16,7 +16,8 @@
         <div class="dropdown-divider"></div>
         @foreach ($notifications as $notification)
             <a href="{{ route('notifications.show', $notification->id) }}" class="dropdown-item">
-                <a href="{{ $notification->data['url'] }}" class="dropdown-item">
+                <a href="{{ $notification->data['url']}}?notification_id={{ $notification->id }}" class="dropdown-item">
+                 }}" class="dropdown-item">
 
                 <i class="{{ $notification->data['icon'] }}"></i> {{ $notification->data['body'] }}
                  {{-- {{ $notification->data['message'] }} --}}
@@ -24,6 +25,6 @@
             </a>
             <div class="dropdown-divider"></div>
         @endforeach
-        <a href="{{ route('notifications.index') }}" class="dropdown-item dropdown-footer">See All Notifications</a>
+        {{-- <a href="{{ route('notifications.index') }}" class="dropdown-item dropdown-footer">See All Notifications</a> --}}
     </div>
 </li>

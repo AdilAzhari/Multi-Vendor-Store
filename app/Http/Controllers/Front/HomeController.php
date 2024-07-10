@@ -20,7 +20,7 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        return view('front.home', compact('products'));
+        return view('dashboard.categories.index', compact('products'));
 
     }
 }

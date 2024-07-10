@@ -15,6 +15,14 @@ class MarkNorificationAsRead
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $notification_id = $request->notification_id;
+
+        if ($notification_id) {
+            if (auth()->user()) {
+                auth()->user()->notifications()->where('id', $notification_id)->first()->markAsRead();
+            }
+        }
+
         return $next($request);
     }
 }

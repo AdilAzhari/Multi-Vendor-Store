@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function index()
     {
         $categories = Category::paginate(10);
-        return view('home', compact('categories'));
+        return view('layouts.dashboard', compact('categories'));
     }
     function logout(Request $request)
     {

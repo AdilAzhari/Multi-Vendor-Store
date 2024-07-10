@@ -19,9 +19,6 @@ Route::get('contact', [homeController::class, 'contact'])->name('contact');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::view('dashboard', 'dashboard')
-        ->name('dashboard');
-
     Route::view('profile', 'profile')
         ->name('profile');
 

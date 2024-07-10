@@ -8,10 +8,11 @@ use Illuminate\View\Component;
 
 class NotificationsMenu extends Component
 {
+    public $notifications, $count;
     /**
      * Create a new component instance.
      */
-    public function __construct(public $notifications, public $count)
+    public function __construct($count = 5)
     {
         $user = auth()->user();
         $this->notifications = $user->notifications()->latest()->take($count)->get();
