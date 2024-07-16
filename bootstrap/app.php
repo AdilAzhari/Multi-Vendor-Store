@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Middleware\AlwaysAcceptJson;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\MarkNorificationAsRead;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use PhpParser\Node\Stmt\TraitUseAdaptation\Alias;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,10 +20,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias(['Auth-login'=> CheckLogin::class,
         'MarkNorificationAsRead' => MarkNorificationAsRead::class,
     ]);
+    $middleware->prependToGroup('api', AlwaysAcceptJson::class);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Object not found'], 404);
+            }
+        });
     })->withEvents(discover:[
         __DIR__.'/../app/Events',
         __DIR__.'/../app/listeners',

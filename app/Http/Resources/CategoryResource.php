@@ -22,7 +22,6 @@ class CategoryResource extends JsonResource
             'status' => $this->status,
             'parent_id' => $this->parent_id,
             'image_url' => $this->image_url,
-            // 'products' =>
-        ]
+        ];
     }
 }

@@ -17,32 +17,8 @@ class ProductObserver
     /**
      * Handle the product "updated" event.
      */
-    public function updated(product $product): void
+    public function updating(product $product): void
     {
-        //
-    }
-
-    /**
-     * Handle the product "deleted" event.
-     */
-    public function deleted(product $product): void
-    {
-        //
-    }
-
-    /**
-     * Handle the product "restored" event.
-     */
-    public function restored(product $product): void
-    {
-        //
-    }
-
-    /**
-     * Handle the product "force deleted" event.
-     */
-    public function forceDeleted(product $product): void
-    {
-        //
+        $product->slug = str()->slug($product->name);
     }
 }
