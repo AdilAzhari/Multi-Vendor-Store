@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class admin extends User
+class Admin extends Model
 {
     use HasFactory,Notifiable,TwoFactorAuthenticatable;
 
@@ -20,5 +21,4 @@ class admin extends User
         'password'
     ];
 
-    protected $hidden = ['password'];
 }

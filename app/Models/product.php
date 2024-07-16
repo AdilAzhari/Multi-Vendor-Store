@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\ProductObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(ProductObserver::class)]
 class product extends Model
 {
     use HasFactory, SoftDeletes;
@@ -25,6 +29,13 @@ class product extends Model
         'status',
         'quantity',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'image',
+    ];
+    protected $appends = ['image_url'];
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class)->withDefault('No category');
@@ -33,16 +44,13 @@ class product extends Model
     {
         return $this->belongsTo(Store::class);
     }
-    public function scopeFilter($query, $filters)
+    public function scopeFilter(Builder $builder, array $filters)
     {
-        return $query->when($filters['name'] ?? null, function ($query, $name) {
-            $query->where('name', 'like', '%' . $name . '%');
-        })->when($filters['status'] ?? null, function ($query, $status) {
-            $query->where('status', $status);
-        })->when($filters['store_id'] ?? null, function ($query, $storeId) {
-            $query->where('store_id', $storeId);
-        });
+        $options = [
+            'search', 'category', 'store', 'min_price', 'max_price', 'sort', 'order'
+        ];
     }
+
     public function tags()
     {
         return $this->belongsToMany(tag::class);
@@ -70,7 +78,10 @@ class product extends Model
 
     public function getImageUrlAttribute($value)
     {
-        return $value ?  $value : 'dist/img/default-150x150.png';
+        if($this->image){
+            return asset('storage/' . $this->image);
+        }
+        return $this->image ? asset('storage/' . $this->image) : 'https://via.placeholder.com/150';
     }
     public function getComparePriceAttribute($value)
     {

@@ -85,9 +85,9 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginView(function () {
             if (config('fortify.guard') == 'admin') {
-                return view('auth.login');
+                return to_route('login');
             } else {
-                // return view('we.auth.login');
+                return view('front.auth.login');
             }
         });
 

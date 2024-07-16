@@ -5,6 +5,7 @@
     <x-slot name="style">
         <!-- icheck bootstrap -->
         <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     </x-slot>
     <x-slot name="content">
         <div class="login-box">
@@ -35,7 +36,8 @@
                         @csrf
                         <div class="input-group mb-3">
                             <input type="text" class="form-control @error('email') is-invalid @enderror"
-                                name="{{ config('fortify.username') }}" value="{{ old('email') }}" placeholder="Email" required>
+                                name="{{ config('fortify.username') }}" value="{{ old('email') }}" placeholder="Email"
+                                required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -78,12 +80,13 @@
                             <!-- /.col -->
                         </div>
                     </form>
-                    @if (Route::has('password.request'))
+                    {{-- @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}">I forgot my password</a><br>
-                    @endif
+                    @endif --}}
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
                     @endif
+
                 </div>
                 <!-- /.login
                 -card-body -->

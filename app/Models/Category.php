@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Str;
 class Category extends Model
 {
     use HasFactory, SoftDeletes;
@@ -18,6 +18,12 @@ class Category extends Model
         'parent_id',
         'status',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+    protected $appends = ['image_url'];
     protected $dates = ['deleted_at'];
     public function parent()
     {
@@ -26,6 +32,11 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->attributes['image'] ? asset('storage/' . $this->attributes['image']) : null;
     }
     public function scopeActive()
     {

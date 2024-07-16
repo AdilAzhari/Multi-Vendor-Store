@@ -77,8 +77,8 @@ class CartModelRepository implements CartsRepository
         try {
             foreach ($items as $store_id => $carts) {
                 $order = Order::create([
-                    'payment_method' => 'stripe', //$request->payment_method,
-                    'store_id' => 1 //$store_id,
+                    'payment_method' => 'stripe',
+                    'store_id' => 1
                 ]);
                 foreach ($carts as $item) {
                     OrderItem::create([
