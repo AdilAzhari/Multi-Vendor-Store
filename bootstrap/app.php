@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AlwaysAcceptJson;
+use App\Http\Middleware\CheckApiValidationToken;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\MarkNorificationAsRead;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'MarkNorificationAsRead' => MarkNorificationAsRead::class,
     ]);
     $middleware->prependToGroup('api', AlwaysAcceptJson::class);
+    $middleware->appendToGroup('api', CheckApiValidationToken::class);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,TwoFactorAuthenticatable;
+    use HasFactory, Notifiable,TwoFactorAuthenticatable,HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -32,6 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_confirmed_at',
+        'two_factor_secret',
     ];
 
     /**

@@ -12,14 +12,10 @@ use Illuminate\Http\Request;
 class ProductsController extends Controller
 {
     use ApiResponses;
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(request $request)
+    public function index()
     {
-        $filters = $request->all();
-        $prodcut = product::with('category')->filter($filters)->
-        active()->latest()->paginate(10);
+        $filters = request()->only(['category_id', 'store_id', 'price', 'name']);
+        $prodcut = product::with('category')->filter($filters)->active()->latest()->paginate(10);
         return $this->successResponse(ProductResource::collection($prodcut), 'Products Retrieved Successfully');
     }
 
@@ -31,7 +27,8 @@ class ProductsController extends Controller
         $product = Product::Create($request->only([
             'name', 'slug', 'description', 'price', 'category_id', 'status', 'store_id', 'status',
         ]));
-
+        $user = auth()->user();
+        if(!$user->can('products.create')) return $this->errorResponse('Unauthorized', 403);
         return $this->successResponse(new ProductResource($product), 'Product Created Successfully', 201);
     }
 
@@ -58,9 +55,11 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(product $product)
     {
-        product::destroy($id);
+        $user = auth()->guard('sanctum')->user();
+        if(!$user->can('products.delete')) return $this->errorResponse('Not Allowed', 403);
+        $product->delete();
         return $this->destroyResponse('Product Deleted Successfully', 204);
     }
 }
