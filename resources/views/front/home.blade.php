@@ -1,10 +1,17 @@
-<x-front-layout>
-    <!-- Start Hero Area -->
-    <x-slot:title>
-        Home
-    </x-slot>
+@php
+use App\Helpers\Currency;
+@endphp
 
+@extends('layouts.front')
 
+@section('title', 'Home')
+
+@section('breadcrumb')
+    @parent
+    <li>Home</li>
+@endsection
+
+@section('content')
     <!-- Start Hero Area -->
     <section class="hero-area">
         <div class="container">
@@ -13,40 +20,20 @@
                     <div class="slider-head">
                         <!-- Start Hero Slider -->
                         <div class="hero-slider">
-                            <!-- Start Single Slider -->
-                            <div class="single-slider"
-                                style="background-image: url(https://via.placeholder.com/800x500);">
-                                <div class="content">
-                                    <h2><span>No restocking fee ($35 savings)</span>
-                                        M75 Sport Watch
-                                    </h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor
-                                        incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <h3><span>Now Only</span> $320.99</h3>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
+                            @foreach ($slides as $slide)
+                                <!-- Start Single Slider -->
+                                <div class="single-slider" style="background-image: url({{ $slide['image'] }});">
+                                    <div class="content">
+                                        <h2>{!! $slide['title'] !!}</h2>
+                                        <p>{{ $slide['desc'] }}</p>
+                                        <h3><span>Now Only</span> ${{ $slide['price'] }}</h3>
+                                        <div class="button">
+                                            <a href="{{ $slide['link'] }}" class="btn">Shop Now</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- End Single Slider -->
-                            <!-- Start Single Slider -->
-                            <div class="single-slider"
-                                style="background-image: url(https://via.placeholder.com/800x500);">
-                                <div class="content">
-                                    <h2><span>Big Sale Offer</span>
-                                        Get the Best Deal on CCTV Camera
-                                    </h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor
-                                        incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <h3><span>Combo Only:</span> $590.00</h3>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Slider -->
+                                <!-- End Single Slider -->
+                            @endforeach
                         </div>
                         <!-- End Hero Slider -->
                     </div>
@@ -99,110 +86,27 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="row">
+            <div class="row">
+                @foreach ($categories as $category)
                     <div class="col-lg-4 col-md-6 col-12">
                         <!-- Start Single Category -->
                         <div class="single-category">
-                            <h3 class="heading">TV & Audios</h3>
+                            <h3 class="heading"><a
+                                    href="{{ route('products.category', $category->slug) }}">{{ $category->name }}</a></h3>
                             <ul>
-                                <li><a href="product-grids.html">Smart Television</a></li>
-                                <li><a href="product-grids.html">QLED TV</a></li>
-                                <li><a href="product-grids.html">Audios</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">View All</a></li>
+                                @foreach ($category->children as $child)
+                                    <li><a href="{{ route('products.category', $child->slug) }}">{{ $child->name }}</a>
+                                    </li>
+                                @endforeach
                             </ul>
                             <div class="images">
-                                <img src="https://via.placeholder.com/180x180" alt="#">
+                                <img src="{{ $category->image_url }}" width="180" alt="#">
                             </div>
                         </div>
                         <!-- End Single Category -->
                     </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <!-- Start Single Category -->
-                        <div class="single-category">
-                            <h3 class="heading">Desktop & Laptop</h3>
-                            <ul>
-                                <li><a href="product-grids.html">Smart Television</a></li>
-                                <li><a href="product-grids.html">QLED TV</a></li>
-                                <li><a href="product-grids.html">Audios</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">View All</a></li>
-                            </ul>
-                            <div class="images">
-                                <img src="https://via.placeholder.com/180x180" alt="#">
-                            </div>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <!-- Start Single Category -->
-                        <div class="single-category">
-                            <h3 class="heading">Cctv Camera</h3>
-                            <ul>
-                                <li><a href="product-grids.html">Smart Television</a></li>
-                                <li><a href="product-grids.html">QLED TV</a></li>
-                                <li><a href="product-grids.html">Audios</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">View All</a></li>
-                            </ul>
-                            <div class="images">
-                                <img src="https://via.placeholder.com/180x180" alt="#">
-                            </div>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <!-- Start Single Category -->
-                        <div class="single-category">
-                            <h3 class="heading">Dslr Camera</h3>
-                            <ul>
-                                <li><a href="product-grids.html">Smart Television</a></li>
-                                <li><a href="product-grids.html">QLED TV</a></li>
-                                <li><a href="product-grids.html">Audios</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">View All</a></li>
-                            </ul>
-                            <div class="images">
-                                <img src="https://via.placeholder.com/180x180" alt="#">
-                            </div>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <!-- Start Single Category -->
-                        <div class="single-category">
-                            <h3 class="heading">Smart Phones</h3>
-                            <ul>
-                                <li><a href="product-grids.html">Smart Television</a></li>
-                                <li><a href="product-grids.html">QLED TV</a></li>
-                                <li><a href="product-grids.html">Audios</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">View All</a></li>
-                            </ul>
-                            <div class="images">
-                                <img src="https://via.placeholder.com/180x180" alt="#">
-                            </div>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <!-- Start Single Category -->
-                        <div class="single-category">
-                            <h3 class="heading">Game Console</h3>
-                            <ul>
-                                <li><a href="product-grids.html">Smart Television</a></li>
-                                <li><a href="product-grids.html">QLED TV</a></li>
-                                <li><a href="product-grids.html">Audios</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">View All</a></li>
-                            </ul>
-                            <div class="images">
-                                <img src="https://via.placeholder.com/180x180" alt="#">
-                            </div>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
-                </div> --}}
+                @endforeach
+            </div>
         </div>
     </section>
     <!-- End Features Area -->
@@ -223,12 +127,34 @@
                 @foreach ($products as $product)
                     <div class="col-lg-3 col-md-6 col-12">
                         <!-- Start Single Product -->
-                        <x-product-card :product="$product" />
+                        <div class="single-product">
+                            <div class="product-image">
+                                <img src="{{ $product->image_url }}" alt="#">
+                                <div class="button">
+                                    <a href="{{ route('cart.store', $product->id) }}" class="btn"><i
+                                            class="lni lni-cart"></i> Add to Cart</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">{{ $product->category->name }}</span>
+                                <h4 class="title">
+                                    <a href="{{ route('front.products.show', $product->id) }}">{{ $product->name }}</a>
+                                </h4>
+                                <ul class="review">
+                                    @for ($i = 0; $i < 5; $i++)
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                    @endfor
+                                    {{-- <li><span>{{ $product->reviews->count() }} Review(s)</span></li> --}}
+                                </ul>
+
+                                <div class="price">
+                                    <span>{{ Currency::format($product->price) }}</span>
+                                </div>
+                            </div>
+                        </div>
                         <!-- End Single Product -->
                     </div>
                 @endforeach
-
-
             </div>
         </div>
     </section>
@@ -267,6 +193,7 @@
     </section>
     <!-- End Banner Area -->
 
+
     <!-- Start Special Offer -->
     <section class="special-offer section">
         <div class="container">
@@ -288,9 +215,7 @@
                                 <div class="product-image">
                                     <img src="https://via.placeholder.com/335x335" alt="#">
                                     <div class="button">
-                                        <a href="product-details.html" class="btn"><i class="lni lni-cart"></i>
-                                            Add
-                                            to
+                                        <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to
                                             Cart</a>
                                     </div>
                                 </div>
@@ -314,68 +239,6 @@
                             </div>
                             <!-- End Single Product -->
                         </div>
-                        <div class="col-lg-4 col-md-4 col-12">
-                            <!-- Start Single Product -->
-                            <div class="single-product">
-                                <div class="product-image">
-                                    <img src="https://via.placeholder.com/335x335" alt="#">
-                                    <div class="button">
-                                        <a href="product-details.html" class="btn"><i class="lni lni-cart"></i>
-                                            Add to
-                                            Cart</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <span class="category">Laptop</span>
-                                    <h4 class="title">
-                                        <a href="product-grids.html">Apple MacBook Air</a>
-                                    </h4>
-                                    <ul class="review">
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><span>5.0 Review(s)</span></li>
-                                    </ul>
-                                    <div class="price">
-                                        <span>$899.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-12">
-                            <!-- Start Single Product -->
-                            <div class="single-product">
-                                <div class="product-image">
-                                    <img src="https://via.placeholder.com/335x335" alt="#">
-                                    <div class="button">
-                                        <a href="product-details.html" class="btn"><i class="lni lni-cart"></i>
-                                            Add to
-                                            Cart</a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <span class="category">Speaker</span>
-                                    <h4 class="title">
-                                        <a href="product-grids.html">Bluetooth Speaker</a>
-                                    </h4>
-                                    <ul class="review">
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star-filled"></i></li>
-                                        <li><i class="lni lni-star"></i></li>
-                                        <li><span>4.0 Review(s)</span></li>
-                                    </ul>
-                                    <div class="price">
-                                        <span>$70.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Product -->
-                        </div>
                     </div>
                     <!-- Start Banner -->
                     <div class="single-banner right"
@@ -393,53 +256,6 @@
                         </div>
                     </div>
                     <!-- End Banner -->
-                </div>
-                <div class="col-lg-4 col-md-12 col-12">
-                    <div class="offer-content">
-                        <div class="image">
-                            <img src="https://via.placeholder.com/510x600" alt="#">
-                            <span class="sale-tag">-50%</span>
-                        </div>
-                        <div class="text">
-                            <h2><a href="product-grids.html">Bluetooth Headphone</a></h2>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$200.00</span>
-                                <span class="discount-price">$400.00</span>
-                            </div>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry incididunt
-                                ut
-                                eiusmod tempor labores.</p>
-                        </div>
-                        <div class="box-head">
-                            <div class="box">
-                                <h1 id="days">000</h1>
-                                <h2 id="daystxt">Days</h2>
-                            </div>
-                            <div class="box">
-                                <h1 id="hours">00</h1>
-                                <h2 id="hourstxt">Hours</h2>
-                            </div>
-                            <div class="box">
-                                <h1 id="minutes">00</h1>
-                                <h2 id="minutestxt">Minutes</h2>
-                            </div>
-                            <div class="box">
-                                <h1 id="seconds">00</h1>
-                                <h2 id="secondstxt">Secondes</h2>
-                            </div>
-                        </div>
-                        <div style="background: rgb(204, 24, 24);" class="alert">
-                            <h1 style="padding: 50px 80px;color: white;">We are sorry, Event ended ! </h1>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -698,8 +514,7 @@
                         <div class="blog-content">
                             <a class="category" href="javascript:void(0)">Electronic</a>
                             <h4>
-                                <a href="blog-single-sidebar.html">Electronics, instrumentation & control
-                                    engineering
+                                <a href="blog-single-sidebar.html">Electronics, instrumentation & control engineering
                                 </a>
                             </h4>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -714,6 +529,7 @@
             </div>
         </div>
     </section>
+
     <!-- End Blog Section Area -->
 
     <!-- Start Shipping Info -->
@@ -764,77 +580,79 @@
         </div>
     </section>
     <!-- End Shipping Info -->
-    @push('scripts')
-        <script type="text/javascript">
-            //========= Hero Slider
-            tns({
-                container: '.hero-slider',
-                slideBy: 'page',
-                autoplay: true,
-                autoplayButtonOutput: false,
-                mouseDrag: true,
-                gutter: 0,
-                items: 1,
-                nav: false,
-                controls: true,
-                controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
-            });
+@endsection
+@push('js')
+    <script type="text/javascript">
+        //========= Hero Slider
+        tns({
+            container: '.hero-slider',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 0,
+            items: 1,
+            nav: false,
+            controls: true,
+            controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
+        });
 
-            //======== Brand Slider
-            tns({
-                container: '.brands-logo-carousel',
-                autoplay: true,
-                autoplayButtonOutput: false,
-                mouseDrag: true,
-                gutter: 15,
-                nav: false,
-                controls: false,
-                responsive: {
-                    0: {
-                        items: 1,
-                    },
-                    540: {
-                        items: 3,
-                    },
-                    768: {
-                        items: 5,
-                    },
-                    992: {
-                        items: 6,
-                    }
+        //======== Brand Slider
+        tns({
+            container: '.brands-logo-carousel',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 3,
+                },
+                768: {
+                    items: 5,
+                },
+                992: {
+                    items: 6,
                 }
-            });
-        </script>
-        <script>
-            const finaleDate = new Date("February 15, 2023 00:00:00").getTime();
-
-            const timer = () => {
-                const now = new Date().getTime();
-                let diff = finaleDate - now;
-                if (diff < 0) {
-                    document.querySelector('.alert').style.display = 'block';
-                    document.querySelector('.container').style.display = 'none';
-                }
-
-                let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                let hours = Math.floor(diff % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
-                let minutes = Math.floor(diff % (1000 * 60 * 60) / (1000 * 60));
-                let seconds = Math.floor(diff % (1000 * 60) / 1000);
-
-                days <= 99 ? days = `0${days}` : days;
-                days <= 9 ? days = `00${days}` : days;
-                hours <= 9 ? hours = `0${hours}` : hours;
-                minutes <= 9 ? minutes = `0${minutes}` : minutes;
-                seconds <= 9 ? seconds = `0${seconds}` : seconds;
-
-                document.querySelector('#days').textContent = days;
-                document.querySelector('#hours').textContent = hours;
-                document.querySelector('#minutes').textContent = minutes;
-                document.querySelector('#seconds').textContent = seconds;
-
             }
-            timer();
-            setInterval(timer, 1000);
-        </script>
-    @endpush
-</x-front-layout>
+        });
+    </script>
+@endpush
+@push('js')
+    <script>
+        const finaleDate = new Date("February 15, 2023 00:00:00").getTime();
+
+        const timer = () => {
+            const now = new Date().getTime();
+            let diff = finaleDate - now;
+            if (diff < 0) {
+                document.querySelector('.alert').style.display = 'block';
+                document.querySelector('.container').style.display = 'none';
+            }
+
+            let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            let hours = Math.floor(diff % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+            let minutes = Math.floor(diff % (1000 * 60 * 60) / (1000 * 60));
+            let seconds = Math.floor(diff % (1000 * 60) / 1000);
+
+            days <= 99 ? days = `0${days}` : days;
+            days <= 9 ? days = `00${days}` : days;
+            hours <= 9 ? hours = `0${hours}` : hours;
+            minutes <= 9 ? minutes = `0${minutes}` : minutes;
+            seconds <= 9 ? seconds = `0${seconds}` : seconds;
+
+            document.querySelector('#days').textContent = days;
+            document.querySelector('#hours').textContent = hours;
+            document.querySelector('#minutes').textContent = minutes;
+            document.querySelector('#seconds').textContent = seconds;
+
+        }
+        timer();
+        setInterval(timer, 1000);
+    </script>
+@endpush

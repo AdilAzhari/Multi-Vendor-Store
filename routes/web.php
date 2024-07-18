@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\front\CheckoutController;
+use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Livewire\Actions\Logout;
@@ -35,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/checkout', 'store')->name('checkout.store');
         Route::get('/confirmation/{order}', 'confirmation')->name('confirmation');
     });
-
+    Route::post('currency', [CurrencyConverterController::class, 'store'])->name('currency.store');
 });
 
 require __DIR__ . '/dashboard.php';

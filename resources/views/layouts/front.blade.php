@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html class="no-js" lang="zxx">
+<html class="no-js">
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>{{ $title }}</title>
+    <title>@yield('title', 'Home') | {{ config('app.name') }}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.svg" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.svg') }}" />
 
     <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
@@ -15,11 +15,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/tiny-slider.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
-    @stack('styles')
+    @stack('css')
 </head>
 
 <body>
-    <!-- Preloader -->
+    {{-- Preloader --}}
     <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <!-- /End Preloader -->
+    {{-- <--/End Preloader --> --}}
 
     <!-- Start Header Area -->
     <header class="header navbar-area">
@@ -41,14 +41,16 @@
                             <ul class="menu-top-link">
                                 <li>
                                     <div class="select-position">
-                                        <select id="select4">
-                                            <option value="0" selected>$ USD</option>
-                                            <option value="1">€ EURO</option>
-                                            <option value="2">$ CAD</option>
-                                            <option value="3">₹ INR</option>
-                                            <option value="4">¥ CNY</option>
-                                            <option value="5">৳ BDT</option>
-                                        </select>
+                                        <form action="{{ route('currency.store') }}" method="POST">
+                                            @csrf
+                                            <select name="currency_code" id="select1" onchange="this.form.submit()">
+                                                <option value="USD" @selected('USD' == session('currency_code'))>USD</option>
+                                                <option value="EUR" @selected('EUR' == session('currency_code'))>EUR</option>
+                                                <option value="GBP" @selected('GBP' == session('currency_code'))>GBP</option>
+                                                <option value="INR" @selected('INR' == session('currency_code'))>INR</option>
+                                                <option value="BDT" @selected('BDT' == session('currency_code'))>BDT</option>
+                                            </select>
+                                        </form>
                                     </div>
                                 </li>
                                 <li>
@@ -71,40 +73,25 @@
                         <div class="top-middle">
                             <ul class="useful-links">
                                 <li><a href="{{ route('home') }}">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                {{-- <li><a href="{{ route('pages', ['name' => 'about-us', 'ref' => 1]) }}">About Us</a></li> --}}
+                                {{-- <li><a href="{{ route('pages', 'contact') }}">Contact Us</a></li> --}}
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
-                            @auth
-                                <div class="user">
-                                    <i class="lni lni-user"></i>
-                                    Hello, {{ Auth()->user()->name }}
-                                </div>
-                                <ul class="user-login">
-                                    <li>
-                                        <form action="{{ route('logout') }}" method="POST">
-                                            @csrf
-                                            <button type="submit">Logout</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            @else
-                                <div class="user">
-                                    <i class="lni lni-user"></i>
-                                    Hello
-                                </div>
-                                <ul class="user-login">
-                                    <li>
-                                        <a href="{{ route('login') }}">Sign In</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('register') }}">Register</a>
-                                    </li>
-                                </ul>
-                            @endauth
+                            <div class="user">
+                                <i class="lni lni-user"></i>
+                                Hello
+                            </div>
+                            <ul class="user-login">
+                                <li>
+                                    <a href="login.html">Sign In</a>
+                                </li>
+                                <li>
+                                    <a href="register.html">Register</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -117,7 +104,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
@@ -225,17 +212,16 @@
                                         <a href="{{ route('home') }}" aria-label="Toggle navigation">Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dd-menu active collapsed" href="javascript:void(0)"
+                                        <a class="dd-menu collapsed" href="javascript:void(0)"
                                             data-bs-toggle="collapse" data-bs-target="#submenu-1-2"
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
                                             aria-label="Toggle navigation">Pages</a>
                                         <ul class="sub-menu collapse" id="submenu-1-2">
                                             <li class="nav-item"><a href="about-us.html">About Us</a></li>
                                             <li class="nav-item"><a href="faq.html">Faq</a></li>
-                                            <li class="nav-item active"><a href="login.html">Login</a></li>
+                                            <li class="nav-item"><a href="login.html">Login</a></li>
                                             <li class="nav-item"><a href="register.html">Register</a></li>
-                                            <li class="nav-item"><a href="mail-success.html">Mail Success</a>
-                                            </li>
+                                            <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
                                             <li class="nav-item"><a href="404.html">404 Error</a></li>
                                         </ul>
                                     </li>
@@ -245,13 +231,9 @@
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
                                             aria-label="Toggle navigation">Shop</a>
                                         <ul class="sub-menu collapse" id="submenu-1-3">
-                                            <li class="nav-item"><a href="product-grids.html">Shop Grid</a>
-                                            </li>
-                                            <li class="nav-item"><a href="product-list.html">Shop List</a>
-                                            </li>
-                                            <li class="nav-item"><a href="product-details.html">shop
-                                                    Single</a>
-                                            </li>
+                                            <li class="nav-item"><a href="product-grids.html">Shop Grid</a></li>
+                                            <li class="nav-item"><a href="product-list.html">Shop List</a></li>
+                                            <li class="nav-item"><a href="product-details.html">shop Single</a></li>
                                             <li class="nav-item"><a href="cart.html">Cart</a></li>
                                             <li class="nav-item"><a href="checkout.html">Checkout</a></li>
                                         </ul>
@@ -265,15 +247,14 @@
                                             <li class="nav-item"><a href="blog-grid-sidebar.html">Blog Grid
                                                     Sidebar</a>
                                             </li>
-                                            <li class="nav-item"><a href="blog-single.html">Blog Single</a>
-                                            </li>
-                                            <li class="nav-item"><a href="blog-single-sidebar.html">Blog
-                                                    Single
+                                            <li class="nav-item"><a href="blog-single.html">Blog Single</a></li>
+                                            <li class="nav-item"><a href="blog-single-sidebar.html">Blog Single
                                                     Sibebar</a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="contact.html" aria-label="Toggle navigation">Contact Us</a>
+                                        <a href="contact.html" class="active" aria-label="Toggle navigation">Contact
+                                            Us</a>
                                     </li>
                                 </ul>
                             </div> <!-- navbar collapse -->
@@ -308,12 +289,32 @@
     </header>
     <!-- End Header Area -->
 
-    <!-- Start Breadcrumbs -->
-    {{ $breadcrumb ?? '' }}
-    <!-- End Breadcrumbs -->
+    @hasSection('breadcrumb')
+        <!-- Start Breadcrumbs -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="breadcrumbs-content">
+                            <h1 class="page-title">@yield('title')</h1>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <ul class="breadcrumb-nav">
+                            @section('breadcrumb')
+                                <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
+                            @show
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumbs -->
+    @endif
 
-    {{ $slot }}
-    <!-- Start Breadcrumbs -->
+    {{-- <x-flash-message /> --}}
+
+    @yield('content')
 
     <!-- Start Footer Area -->
     <footer class="footer">
@@ -324,8 +325,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-12">
                             <div class="footer-logo">
-                                <a href="index.html">
-                                    <img src="{{ asset('images/logo/white-logo.svg') }}" alt="#">
+                                <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="#">
                                 </a>
                             </div>
                         </div>
@@ -434,7 +435,14 @@
                         <div class="col-lg-4 col-12">
                             <div class="payment-gateway">
                                 <span>We Accept:</span>
-                                <img src={{ asset('assets/images/footer/credit-cards-footer.png') }} alt="#">
+                                <img src="{{ asset('assets/images/footer/credit-cards-footer.png') }}"
+                                    alt="#">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-12">
+                            <div class="copyright">
+                                <p>Designed and Developed by<a href="https://graygrids.com/" rel="nofollow"
+                                        target="_blank">GrayGrids</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
@@ -442,10 +450,8 @@
                                 <li>
                                     <span>Follow Us On:</span>
                                 </li>
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
-                                </li>
-                                <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
-                                </li>
+                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
                                 <li><a href="javascript:void(0)"><i class="lni lni-google"></i></a></li>
                             </ul>
@@ -468,7 +474,7 @@
     <script src="{{ asset('assets/js/tiny-slider.js') }}"></script>
     <script src="{{ asset('assets/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    @stack('scripts')
+    @stack('js')
 </body>
 
 </html>

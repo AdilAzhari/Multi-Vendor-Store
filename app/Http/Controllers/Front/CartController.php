@@ -22,8 +22,8 @@ class CartController extends Controller
     {
 
         return view('front.cart.index')->with([
-            'carts' => $this->cartModelRepository->get(),
-            'totals' => $this->cartModelRepository->total(),
+            'cart' => $this->cartModelRepository,
+            'total' => $this->cartModelRepository->total(),
         ]);
     }
 
