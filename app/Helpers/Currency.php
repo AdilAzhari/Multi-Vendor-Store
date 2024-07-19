@@ -9,7 +9,7 @@ class Currency
 {
     public static function format($amount, $currency = null)
     {
-        $base_currency = config('app.currency', 'USD');
+        $base_currency = config('app.currency', 'MYR');
 
         $format = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
 

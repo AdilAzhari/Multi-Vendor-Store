@@ -80,7 +80,7 @@ return [
 
     'locale' => env('APP_LOCALE', 'en'),
 
-    'currency' => env('APP_CURRENCY', 'USD'),
+    'currency' => env('APP_CURRENCY', 'MYR'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

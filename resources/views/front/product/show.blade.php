@@ -1,25 +1,14 @@
-<x-front-layout :title="$product->name">
-    <x-slot:breadcrumb>
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <div class="breadcrumbs-content">
-                            <h1 class="page-title">{{ $product->name }}</h1>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <ul class="breadcrumb-nav">
-                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
-                            <li> <a href="{{ route('front.products.index') }}">Shopse</a></li>
-                            <li>{{ $product->name }}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </x-slot:breadcrumb>
+@extends('layouts.front')
 
+@section('title', $product->name)
+
+@section('breadcrumb')
+    @parent
+    <li>{{ $product->category->name }}</li>
+    <li>{{ $product->name }}</li>
+@endsection
+
+@section('content')
     <!-- Start Item Details -->
     <section class="item-details section">
         <div class="container">
@@ -43,29 +32,52 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
-                            <h2 class="title">{{ $product->name }}</h2>
-                            <p class="category"><i class="lni lni-tag"></i> Drones:<a
-                                    href="javascript:void(0)">{{ $product->category->name }}</a></p>
-                            <h3 class="price">{{ Currency::FORMAT($product->price, '') }} @if ($product->compare_price)
-                                    <span>${{ Currency::FORMAT($product->compare_price, '') }}</span>
-                                @endif
-                            </h3>
-                            <p class="info-text"> {{ $product->description }}</p>
-                            <form action="{{ route('cart.store') }}" method="POST">
+                            <form action="{{ route('cart.index') }}" method="post">
                                 @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <h2 class="title">{{ $product->name }}</h2>
+                                <p class="category"><i class="lni lni-tag"></i> <a href="javascript:void(0)">{{ $product->category->name }}</a></p>
+                                <h3 class="price">{{ Currency::format($product->price) }}
+                                    @if($product->compare_price)
+                                    <span>{{ Currency::format($product->compare_price) }}</span>
+                                    @endif
+                                </h3>
+                                <p class="info-text">{{ $product->description }}</p>
                                 <div class="row">
-                                    <!-- Other form fields here -->
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group color-option">
+                                            <label class="title-label" for="size">Choose color</label>
+                                            <div class="single-checkbox checkbox-style-1">
+                                                <input type="checkbox" id="checkbox-1" checked>
+                                                <label for="checkbox-1"><span></span></label>
+                                            </div>
+                                            <div class="single-checkbox checkbox-style-2">
+                                                <input type="checkbox" id="checkbox-2">
+                                                <label for="checkbox-2"><span></span></label>
+                                            </div>
+                                            <div class="single-checkbox checkbox-style-3">
+                                                <input type="checkbox" id="checkbox-3">
+                                                <label for="checkbox-3"><span></span></label>
+                                            </div>
+                                            <div class="single-checkbox checkbox-style-4">
+                                                <input type="checkbox" id="checkbox-4">
+                                                <label for="checkbox-4"><span></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="color">Battery capacity</label>
+                                            <select class="form-control" id="color">
+                                                <option>5100 mAh</option>
+                                                <option>6200 mAh</option>
+                                                <option>8000 mAh</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="form-group quantity">
-                                            <label for="quantity">Quantity</label>
-                                            <select class="form-control" name="quantity">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
+                                            <label for="color">Quantity</label>
+                                            <input class="form-control" name="quantity" value="1">
                                         </div>
                                     </div>
                                 </div>
@@ -73,24 +85,23 @@
                                     <div class="row align-items-end">
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <div class="button cart-button">
-                                                <button class="btn" style="width: 100%;" type="submit">Add to Cart</button>
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button type="submit" class="btn" style="width: 100%;">Add to Cart</button>
                                             </div>
                                         </div>
-                                        <!-- Other buttons here -->
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <div class="wish-button">
+                                                <button class="btn"><i class="lni lni-reload"></i> Compare</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <div class="wish-button">
+                                                <button class="btn"><i class="lni lni-heart"></i> To Wishlist</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
-
-
-                            <div class="share">
-                                <span>Share:</span>
-                                <ul>
-                                    <li><a href="javascript:void(0)"><i class="lni lni-facebook"></i></a></li>
-                                    <li><a href="javascript:void(0)"><i class="lni lni-twitter"></i></a></li>
-                                    <li><a href="javascript:void(0)"><i class="lni lni-linkedin"></i></a></li>
-                                    <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -318,25 +329,25 @@
         </div>
     </div>
     <!-- End Review Modal -->
-    @push('script')
-        <script type="text/javascript">
-            const current = document.getElementById("current");
-            const opacity = 0.6;
-            const imgs = document.querySelectorAll(".img");
-            imgs.forEach(img => {
-                img.addEventListener("click", (e) => {
-                    //reset opacity
-                    imgs.forEach(img => {
-                        img.style.opacity = 1;
-                    });
-                    current.src = e.target.src;
-                    //adding class
-                    //current.classList.add("fade-in");
-                    //opacity
-                    e.target.style.opacity = opacity;
-                });
-            });
-        </script>
-    @endpush
+@endsection
 
-</x-front-layout>
+@push('js')
+    <script type="text/javascript">
+        const current = document.getElementById("current");
+        const opacity = 0.6;
+        const imgs = document.querySelectorAll(".img");
+        imgs.forEach(img => {
+            img.addEventListener("click", (e) => {
+                //reset opacity
+                imgs.forEach(img => {
+                    img.style.opacity = 1;
+                });
+                current.src = e.target.src;
+                //adding class
+                //current.classList.add("fade-in");
+                //opacity
+                e.target.style.opacity = opacity;
+            });
+        });
+    </script>
+@endpush

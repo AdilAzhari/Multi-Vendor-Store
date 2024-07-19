@@ -5,17 +5,22 @@ use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\front\CheckoutController;
 use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\LocaleController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-Route::get('/', HomeController::class)->name('home');
+Route::get('/', [HomeController::class,'index'])->name('home');
 
 require __DIR__ . '/auth.php';
 
-Route::get('contact', [homeController::class, 'contact'])->name('contact');
+// Route::get('contact', [homeController::class, 'contact'])->name('contact');
+Route::get('/pages/{name}', [HomeController::class, 'show'])
+    ->name('pages');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::prefix(LaravelLocalization::setLocale())->middleware(['auth', 'verified','localeSessionRedirect', 'localizationRedirect','localeViewPath'])
+    ->group(function () {
 
     Route::view('profile', 'profile')
         ->name('profile');
@@ -40,3 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__ . '/dashboard.php';
+
+// routes/web.php
+
+Route::get('setlocale/{locale}', [LocaleController::class, 'setLocale'])->name('setlocale');

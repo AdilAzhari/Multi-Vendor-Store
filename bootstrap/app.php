@@ -4,11 +4,17 @@ use App\Http\Middleware\AlwaysAcceptJson;
 use App\Http\Middleware\CheckApiValidationToken;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\MarkNorificationAsRead;
+use App\Http\Middleware\SetAppLocalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Request;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath;
+use Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect;
+use Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,11 +25,15 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias(['Auth-login'=> CheckLogin::class,
-        'MarkNorificationAsRead' => MarkNorificationAsRead::class,
+        'MarkNorificationAsRead'  => MarkNorificationAsRead::class,
+        'localize'                => LaravelLocalizationRoutes::class,
+        'localizationRedirect'    => LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect'   => LocaleSessionRedirect::class,
+        'localeCookieRedirect'    => LocaleCookieRedirect::class,
+        'localeViewPath'          => LaravelLocalizationViewPath::class
     ]);
-    $middleware->prependToGroup('api', AlwaysAcceptJson::class);
-    $middleware->appendToGroup('api', CheckApiValidationToken::class);
-
+    $middleware->prependToGroup('api', [AlwaysAcceptJson::class.CheckApiValidationToken::class]);
+    // $middleware->appendToGroup('web', [LocaleSessionRedirect::class, LocaleCookieRedirect::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {

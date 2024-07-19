@@ -46,10 +46,10 @@
                         <div class="col-lg-4 col-md-3 col-12">
                             <h5 class="product-name"><a href="{{ $item->product->url }}">
                                     {{ $item->product->name }}</a></h5>
-                            {{--<p class="product-des">
+                            {{-- <p class="product-des">
                                 <span><em>Type:</em> Mirrorless</span>
                                 <span><em>Color:</em> Black</span>
-                            </p>--}}
+                            </p> --}}
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
                             <div class="count-input">
@@ -90,10 +90,10 @@
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="right">
                                     <ul>
-                                        <li>Cart Subtotal<span>{{ Currency::format($cart->total(),'USD') }}</span></li>
+                                        <li>Cart Subtotal<span>{{ Currency::format($cart->total()) }}</span></li>
                                         <li>Shipping<span>Free</span></li>
                                         <li>You Save<span>{{ Currency::format(0,'USD') }}</span></li>
-                                        <li class="last">You Pay<span>{{ Currency::format($cart->total(),'') }}</span></li>
+                                        <li class="last">You Pay<span>{{ Currency::format($cart->total()) }}</span></li>
                                     </ul>
                                     <div class="button">
                                         <a href="{{ route('checkout') }}" class="btn">Checkout</a>

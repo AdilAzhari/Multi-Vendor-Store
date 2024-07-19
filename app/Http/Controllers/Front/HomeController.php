@@ -13,7 +13,7 @@ class HomeController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
 
         $products = product::with('category')->active()
@@ -44,5 +44,13 @@ class HomeController extends Controller
             ->get();
         return view('front.home', compact('categories', 'slides', 'products'));
 
+    }
+    public function show($slug)
+    {
+        if ( !View()->exists("front.pages.$slug") ) {
+            abort(404);
+        }
+
+        return view("front.pages.$slug");
     }
 }

@@ -17,7 +17,6 @@ class ProductController extends Controller
     //product detail
     public function show(product $product)
     {
-        // dd($product->name);
         if(!$product->active()){
             abort(404);
         }

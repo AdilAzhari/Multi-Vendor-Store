@@ -28,7 +28,7 @@
                 </li>
             @endforeach
 
-            <li>
+            {{-- <li>
                 <a href="javascript:void(0)" class="remove" title="Remove this item"><i class="lni lni-close"></i></a>
                 <div class="cart-img-head">
                     <a class="cart-img" href="product-details.html"><img
@@ -39,7 +39,7 @@
                     <p class="quantity">1x - <span class="amount">$35.00</span>
                     </p>
                 </div>
-            </li>
+            </li> --}}
         </ul>
         <div class="bottom">
             <div class="total">

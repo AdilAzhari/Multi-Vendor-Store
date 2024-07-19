@@ -6,4 +6,5 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
+    Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
 ];

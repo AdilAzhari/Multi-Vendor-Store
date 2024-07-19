@@ -20,9 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('products/{id}/forceDelete', 'forceDelete')->name('forceDelete');
     });
 
-    Route::controller(ProductController::class)->prefix('front/products')->name('front.products.')->group(function () {
-        Route::get('/{product}', 'show')->name('show');
-    });
+    // Route::controller(ProductController::class)->prefix('front/products')->name('front.products.')->group(function () {
+    //     Route::get('/{product}', 'show')->name('show');
+    // });
 
     Route::resource('stores', StoresController::class);
 

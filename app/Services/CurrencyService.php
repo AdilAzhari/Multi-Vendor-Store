@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 class CurrencyService
 {
     protected $apiKey;
-
     public function __construct()
     {
         $this->apiKey = config('services.currency_converter.api_key');
@@ -28,7 +27,6 @@ class CurrencyService
             Cache()->put($cacheKey, $rates, 3600);
             foreach ($rates['data'] as $currency => $rate) {
                 Cache()->put('currency_rates_' . $currency, $rate, 3600);
-                // Debug message: log cached rates
                 info("Cached rate for $currency: $rate");
             }
             return $rates;

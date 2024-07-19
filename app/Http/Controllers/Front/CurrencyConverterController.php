@@ -19,7 +19,7 @@ class CurrencyConverterController extends Controller
         $currencyCode = $request->input('currency_code');
         session(['currency_code' => $currencyCode]);
 
-        $convertedAmount = $this->currencyService->convertCurrency('USD', $currencyCode);
+        $convertedAmount = $this->currencyService->convertCurrency('MYR', $currencyCode);
 
         return redirect()->back()->with('converted_amount', $convertedAmount);
     }

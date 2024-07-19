@@ -20,14 +20,14 @@
 
 <body>
     {{-- Preloader --}}
-    <div class="preloader">
+    {{-- <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
                 <span></span>
                 <span></span>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- <--/End Preloader --> --}}
 
     <!-- Start Header Area -->
@@ -44,25 +44,26 @@
                                         <form action="{{ route('currency.store') }}" method="POST">
                                             @csrf
                                             <select name="currency_code" id="select1" onchange="this.form.submit()">
+                                                <option value="MYR" @selected('MYR' == session('currency_code'))>MYR</option>
                                                 <option value="USD" @selected('USD' == session('currency_code'))>USD</option>
+                                                <option value="CAD" @selected('CAD' == session('currency_code'))>CAD</option>
+                                                <option value="AUD" @selected('AUD' == session('currency_code'))>AUD</option>
+                                                <option value="JPY" @selected('JPY' == session('currency_code'))>JPY</option>
                                                 <option value="EUR" @selected('EUR' == session('currency_code'))>EUR</option>
                                                 <option value="GBP" @selected('GBP' == session('currency_code'))>GBP</option>
-                                                <option value="INR" @selected('INR' == session('currency_code'))>INR</option>
-                                                <option value="BDT" @selected('BDT' == session('currency_code'))>BDT</option>
                                             </select>
                                         </form>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="select-position">
-                                        <select id="select5">
-                                            <option value="0" selected>English</option>
-                                            <option value="1">Español</option>
-                                            <option value="2">Filipino</option>
-                                            <option value="3">Français</option>
-                                            <option value="4">العربية</option>
-                                            <option value="5">हिन्दी</option>
-                                            <option value="6">বাংলা</option>
+                                        <select id="language-select">
+                                            @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                                <option value="{{ $localeCode }}"
+                                                    {{ session('locale') == $localeCode ? 'selected' : '' }}>
+                                                    {{ $properties['native'] }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </li>
@@ -73,8 +74,8 @@
                         <div class="top-middle">
                             <ul class="useful-links">
                                 <li><a href="{{ route('home') }}">Home</a></li>
-                                {{-- <li><a href="{{ route('pages', ['name' => 'about-us', 'ref' => 1]) }}">About Us</a></li> --}}
-                                {{-- <li><a href="{{ route('pages', 'contact') }}">Contact Us</a></li> --}}
+                                <li><a href="{{ route('pages', ['name' => 'about-us', 'ref' => 1]) }}">About Us</a></li>
+                                <li><a href="{{ route('pages', 'contact') }}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -474,6 +475,12 @@
     <script src="{{ asset('assets/js/tiny-slider.js') }}"></script>
     <script src="{{ asset('assets/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        document.getElementById('language-select').addEventListener('change', function() {
+            var locale = this.value;
+            window.location.href = '/setlocale/' + locale;
+        });
+    </script>
     @stack('js')
 </body>
 
