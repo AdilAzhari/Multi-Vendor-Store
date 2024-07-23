@@ -20,7 +20,6 @@ class CartController extends Controller
      */
     public function index()
     {
-
         return view('front.cart.index')->with([
             'cart' => $this->cartModelRepository,
             'total' => $this->cartModelRepository->total(),
@@ -42,8 +41,12 @@ class CartController extends Controller
      */
     public function update(CartUpdateRequest $cartUpdateRequest , product $product)
     {
-        $this->cartModelRepository->update($product);
-        return back();        //
+        // $this->cartModelRepository->update($product);
+        // return back();
+             //
+        $product = product::findOrFail($cartUpdateRequest->product_id);
+        $this->cartModelRepository->update($product, $cartUpdateRequest->quantity);
+        return back();
     }
 
     /**

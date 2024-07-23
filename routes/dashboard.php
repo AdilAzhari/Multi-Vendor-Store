@@ -3,11 +3,16 @@
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\StoresController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
     // // Admin Routes
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('account/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::patch('account/profile', [ProfileController::class, 'update']);
 
     Route::resource('products', ProductController::class, ['names' => [
         'create' => 'dashboard.products.create' // Custom name for show method

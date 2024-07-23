@@ -31,8 +31,7 @@ class CheckoutController extends Controller
         $storeCheckoutRequest->validated();
 
         $order = $cartModelRepository->storeOrder($storeCheckoutRequest);
-
-        return redirect()->route('cart.index')->with('success', 'Order has been placed successfully');
+        return redirect()->route('orders.payments.create', $order->id);
     }
 
     public function confirmation($orderNumber)

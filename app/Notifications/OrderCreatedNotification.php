@@ -26,7 +26,7 @@ class OrderCreatedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['database', 'broadcast', 'mail'];
     }
 
     /**
@@ -56,6 +56,18 @@ class OrderCreatedNotification extends Notification
             'icon' => 'fa fa-shopping-cart',
             'body' => 'A new Order $this->order->order_number has been placed successfully created by ' . $notifiable->first_name . ' ' . $notifiable->last_name . ' from' .  $this->order->billingAddress->getFullAddressAttribute(),
             'url' => url('/'),
+        ];
+    }
+
+    public function toBroadcast(object $notifiable): array
+    {
+        return [
+            'order_number' => $this->order->order_number,
+            'total' => $this->order->total,
+            'icon' => 'fa fa-shopping-cart',
+            'body' => 'A new Order $this->order->order_number has been placed successfully created by ' . $notifiable->first_name . ' ' . $notifiable->last_name . ' from' .  $this->order->billingAddress->getFullAddressAttribute(),
+            'url' => url('/'),
+            'order_id' => $this->order->id,
         ];
     }
     /**

@@ -112,6 +112,7 @@ class CartModelRepository implements CartsRepository
             DB::rollBack();
             throw $e;
         }
+        return $order;
     }
 
     public function getCookieId()

@@ -37,5 +37,9 @@ return [
     'currency_converter' => [
         'api_key' => env('CURRENCY_CONVERTER_API_KEY'),
     ],
+    'stripe' => [
+        'Publishable_key' => env('Publishable_key'),
+        'Secret_key' => env('Secret_key'),
+    ],
 
 ];

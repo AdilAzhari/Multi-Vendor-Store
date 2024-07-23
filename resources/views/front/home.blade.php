@@ -131,7 +131,13 @@ use App\Helpers\Currency;
                             <div class="product-image">
                                 <img src="{{ $product->image_url }}" alt="#">
                                 <div class="button">
-                                    <a href="{{ route('cart.store', $product->id) }}" class="btn"><i
+                                    {{-- <form action="{{ route('front.products.show',$product) }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn"><i class="lni lni-cart"></i> Add to Cart</button>
+                                    </form> --}}
+                                    <a href="{{ route('front.products.show', $product) }}" class="btn"><i
                                             class="lni lni-cart"></i> Add to Cart</a>
                                 </div>
                             </div>

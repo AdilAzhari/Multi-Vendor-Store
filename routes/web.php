@@ -6,8 +6,10 @@ use App\Http\Controllers\front\CheckoutController;
 use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\LocaleController;
+use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Livewire\Actions\Logout;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -49,3 +51,10 @@ require __DIR__ . '/dashboard.php';
 // routes/web.php
 
 Route::get('setlocale/{locale}', [LocaleController::class, 'setLocale'])->name('setlocale');
+
+// Strip Payment Routes
+Route::controller(PaymentController::class)->group(function () {
+    Route::get('/orders/{order}/pay', 'create')->name('orders.payments.create');
+    Route::post('/orders/{order}/stripe/payment-intent', 'createStripePaymentIntent')->name('stripe.paymentIntent.create');
+    Route::get('/orders/{order}/pay/stripe/callback', 'confirmPayment')->name('stripe.return');
+});
