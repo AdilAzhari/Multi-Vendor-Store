@@ -36,21 +36,21 @@ class CartModelRepository implements CartsRepository
             ->where('product_id', $product->id)
             ->where('user_id', auth()->id())
             ->first();
-
-        if ($item) {
-            $this->update($product, $quantity);
-            return $item->increment('quantity', $quantity);
-        }
-        if (!$item) {
-            $cart = Cart::Create([
-                'user_id' => auth()->id(),
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'cookie_id' => $this->getCookieId(),
-            ]);
-            $this->get()->push($cart);
-            return $cart;
-        }
+        dd($item);
+        // if ($item) {
+        //     $this->update($product, $quantity);
+        //     return $item->increment('quantity', $quantity);
+        // }
+        // if (!$item) {
+        //     $cart = Cart::Create([
+        //         'user_id' => auth()->id(),
+        //         'product_id' => $product->id,
+        //         'quantity' => $quantity,
+        //         'cookie_id' => $this->getCookieId(),
+        //     ]);
+        //     $this->get()->push($cart);
+        //     return $cart;
+        // }
     }
     public function update(product $product, $quantity = 1)
     {

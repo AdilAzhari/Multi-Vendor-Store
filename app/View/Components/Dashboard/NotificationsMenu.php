@@ -2,27 +2,35 @@
 
 namespace App\View\Components\Dashboard;
 
-use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class NotificationsMenu extends Component
 {
-    public $notifications, $count;
+
+    public $notifications;
+
+    public $unread;
+
     /**
      * Create a new component instance.
+     *
+     * @return void
      */
-    public function __construct($count = 5)
+    public function __construct($count = 10)
     {
-        $user = auth()->user();
-        $this->notifications = $user->notifications()->latest()->take($count)->get();
-        $this->count = $user->unreadNotifications->count();
+        //
+        $user = Auth::user();
+        $this->notifications = $user->notifications()->limit($count)->get();
+        $this->unread = $user->unreadNotifications()->count();
     }
 
     /**
      * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render(): View|Closure|string
+    public function render()
     {
         return view('components.dashboard.notifications-menu');
     }

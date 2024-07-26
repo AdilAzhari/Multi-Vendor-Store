@@ -12,6 +12,7 @@
     <div class="shopping-cart section">
         <div class="container">
             <div class="cart-list-head">
+                <x-alert />
                 <!-- Cart List Title -->
                 <div class="cart-list-title">
                     <div class="row">
@@ -41,15 +42,15 @@
                 <div class="cart-single-list">
                     <div class="row align-items-center">
                         <div class="col-lg-1 col-md-1 col-12">
-                            <a href="{{ $item->product->url }}"><img src="{{ $item->product->image_url }}" alt="#"></a>
+                            <a href="{{ route('front.products.show',$item->product) }}"><img src="{{ $item->product->image_url }}" alt="#"></a>
                         </div>
                         <div class="col-lg-4 col-md-3 col-12">
                             <h5 class="product-name"><a href="{{ $item->product->url }}">
                                     {{ $item->product->name }}</a></h5>
-                            {{-- <p class="product-des">
+                            <p class="product-des">
                                 <span><em>Type:</em> Mirrorless</span>
                                 <span><em>Color:</em> Black</span>
-                            </p> --}}
+                            </p>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
                             <div class="count-input">
@@ -57,7 +58,7 @@
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
-                            <p>{{ Currency::format($item->product->price * $item->quantity,'') }}</p>
+                            <p>{{ Currency::format($item->product->price * $item->quantity) }}</p>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
                             <p></p>
@@ -92,7 +93,7 @@
                                     <ul>
                                         <li>Cart Subtotal<span>{{ Currency::format($cart->total()) }}</span></li>
                                         <li>Shipping<span>Free</span></li>
-                                        <li>You Save<span>{{ Currency::format(0,'USD') }}</span></li>
+                                        <li>You Save<span>{{ Currency::format(0) }}</span></li>
                                         <li class="last">You Pay<span>{{ Currency::format($cart->total()) }}</span></li>
                                     </ul>
                                     <div class="button">

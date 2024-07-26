@@ -31,7 +31,6 @@ class CartController extends Controller
      */
     public function store(CartStoreRequest $request, product $product)
     {
-        $product = product::findOrFail($request->product_id);
         $this->cartModelRepository->add($product, $request->quantity);
         return redirect()->route('cart.index')->with('success','Product added to cart');
     }
@@ -41,12 +40,9 @@ class CartController extends Controller
      */
     public function update(CartUpdateRequest $cartUpdateRequest , product $product)
     {
-        // $this->cartModelRepository->update($product);
+        dd($this->cartModelRepository->update($product, $cartUpdateRequest->quantity));
+        // $product->update(['quantity' => $cartUpdateRequest->quantity]);
         // return back();
-             //
-        $product = product::findOrFail($cartUpdateRequest->product_id);
-        $this->cartModelRepository->update($product, $cartUpdateRequest->quantity);
-        return back();
     }
 
     /**

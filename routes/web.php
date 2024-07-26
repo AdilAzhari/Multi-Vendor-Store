@@ -6,6 +6,7 @@ use App\Http\Controllers\front\CheckoutController;
 use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\LocaleController;
+use App\Http\Controllers\Front\OrdersController;
 use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Livewire\Actions\Logout;
@@ -58,3 +59,4 @@ Route::controller(PaymentController::class)->group(function () {
     Route::post('/orders/{order}/stripe/payment-intent', 'createStripePaymentIntent')->name('stripe.paymentIntent.create');
     Route::get('/orders/{order}/pay/stripe/callback', 'confirmPayment')->name('stripe.return');
 });
+Route::get('/orders/{order}', [OrdersController::class, 'show'])->name('orders.show');

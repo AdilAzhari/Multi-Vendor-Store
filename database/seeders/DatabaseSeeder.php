@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\admin;
+use App\Models\Delivery;
 use App\Models\User;
 use Database\Factories\AdminFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,8 +17,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)    ->create();
-        admin::factory(10)->create();
-
+        // admin::factory(10)->create();
+        Delivery::factory(10)->create();
         // $this->call([
         //     CategorySeeder::class,
         //     StoreSeeder::class,

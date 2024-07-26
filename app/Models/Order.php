@@ -64,7 +64,7 @@ class Order extends Model
     }
     public function getShippingAttribute()
     {
-        return 10;
+        return $this->store->shipping;
     }
     public function getTotalAttribute()
     {
@@ -85,5 +85,12 @@ class Order extends Model
     {
         return $this->hasOne(OrderAddress::class)->where('type', 'shipping');
     }
-
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
+    }
 }

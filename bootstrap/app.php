@@ -33,7 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'localeCookieRedirect'    => LocaleCookieRedirect::class,
         'localeViewPath'          => LaravelLocalizationViewPath::class
     ]);
-    $middleware->prependToGroup('api', [AlwaysAcceptJson::class.CheckApiValidationToken::class]);
+    $middleware->prependToGroup('api', [AlwaysAcceptJson::class,CheckApiValidationToken::class]);
     // $middleware->appendToGroup('web', [LocaleSessionRedirect::class, LocaleCookieRedirect::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
