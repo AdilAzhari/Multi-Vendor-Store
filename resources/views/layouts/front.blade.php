@@ -303,7 +303,7 @@
                     <div class="col-lg-6 col-md-6 col-12">
                         <ul class="breadcrumb-nav">
                             @section('breadcrumb')
-                                <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
+                                <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home </a></li>
                             @show
                         </ul>
                     </div>

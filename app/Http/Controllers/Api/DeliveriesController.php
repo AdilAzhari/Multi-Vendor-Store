@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\DeliveryLocationUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DeliveryResource;
 use App\Models\Delivery;
@@ -22,7 +23,11 @@ class DeliveriesController extends Controller
             'lng' => 'required|numeric',
             'lat' => 'required|numeric',
         ]);
-        $delivery->update(['CurrentLocation' => DB::raw('POINT(' . $request->lng . ', ' . $request->lat . ')')]);
+
+
+        $delivery->update($request->only('lat', 'lng'));
+
+        event(new DeliveryLocationUpdated($request->lat, $request->lng));
 
         return response()->json($delivery, 200);
     }

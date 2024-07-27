@@ -11,8 +11,6 @@ class OrdersController extends Controller
     public function show($order)
     {
         $delivery = DB::table('deliveries')->where('order_id', $order)->first();
-        // dd($delivery);
-
         return view('front.orders.show', compact('order', 'delivery'));
     }
 }

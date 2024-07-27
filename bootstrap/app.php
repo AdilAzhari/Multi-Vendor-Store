@@ -11,6 +11,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath;
 use Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect;
@@ -38,8 +39,26 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+            return $e->getCode();
             if ($request->wantsJson()) {
                 return response()->json(['message' => 'Object not found'], 404);
+            }
+            if ($request->is('admin/*')) {
+                return response()->view('admin.errors.404', [], 404);
+            }
+        });
+        $exceptions->reportable(function (Exception $e) {
+            if(app()->bound('sentry') && $this->shouldReport($e)){
+                app('sentry')->captureException($e);
+            }
+            if(app()->bound('bugsnag') && $this->shouldReport($e)){
+                app('bugsnag')->notifyException($e);
+            }
+            if(app()->bound('rollbar') && $this->shouldReport($e)){
+                app('rollbar')->logError($e);
+            }
+            if(app()->bound('raygun') && $this->shouldReport($e)){
+                app('raygun')->sendException($e);
             }
         });
     })->withEvents(discover:[

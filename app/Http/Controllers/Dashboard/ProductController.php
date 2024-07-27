@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\product;
 use App\Http\Requests\StoreproductRequest;
 use App\Http\Requests\UpdateproductRequest;
+use App\Jobs\ImportProducts;
 use App\Models\Category;
 use App\Models\Store;
 use Illuminate\Http\Request;
