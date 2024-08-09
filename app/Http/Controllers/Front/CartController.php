@@ -32,7 +32,7 @@ class CartController extends Controller
     public function store(CartStoreRequest $request, product $product)
     {
         $this->cartModelRepository->add($product, $request->quantity);
-        return redirect()->route('cart.index')->with('success','Product added to cart');
+        return to_route('cart.index')->with('success','Product added to cart');
     }
 
     /**

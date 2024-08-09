@@ -53,7 +53,7 @@ class ProductController extends Controller
             ]);
         }
         product::create($request->all());
-        return redirect()->route('products.index')->with('success', 'Product added successfully');
+        return to_route('products.index')->with('success', 'Product added successfully');
     }
 
     /**
@@ -85,7 +85,7 @@ class ProductController extends Controller
             'slug' => str::slug($request->name)
         ]);
         $product->update($request->validated());
-        return redirect()->route('products.index')->with('info', 'Product updated successfully');
+        return to_route('products.index')->with('info', 'Product updated successfully');
     }
 
     /**
@@ -94,7 +94,7 @@ class ProductController extends Controller
     public function destroy(product $product)
     {
         $product->delete();
-        return redirect()->route('products.index')->with('Info', 'Product deleted and Trashed successfully');
+        return to_route('products.index')->with('Info', 'Product deleted and Trashed successfully');
     }
     public function trash()
     {
@@ -105,13 +105,13 @@ class ProductController extends Controller
     {
         $product = Product::onlyTrashed()->findOrFail($id);
         $product->restore();
-        return redirect()->route('products.trash')->with('Warning', 'Product restored from trash successfully.');
+        return to_route('products.trash')->with('Warning', 'Product restored from trash successfully.');
     }
 
     public function forceDelete($id)
     {
         $product = Product::onlyTrashed()->findOrFail($id);
         $product->forceDelete();
-        return redirect()->route('products.trash')->with('Danger', 'Product permanently deleted.');
+        return to_route('products.trash')->with('Danger', 'Product permanently deleted.');
     }
 }

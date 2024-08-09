@@ -24,20 +24,4 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Profile updated successfully');
     }
-    // public function update(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'first_name' => 'required',
-    //         'last_name' => 'required',
-    //         'birthday' => 'nullable|date|before:now',
-    //         'gender' => 'nullable|in:male,female',
-    //         'country' => 'string|size:2'
-    //     ]);
-
-    //     $user = $request->user();
-    //     $user->profile->fill($validated)->save();
-
-    //     return back()->with('success', 'Profile updated!');
-
-    // }
 }

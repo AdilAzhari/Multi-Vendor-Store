@@ -10,7 +10,6 @@ use App\Http\Controllers\Front\OrdersController;
 use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
 use App\Livewire\Actions\Logout;
-use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -34,11 +33,13 @@ Route::prefix(LaravelLocalization::setLocale())->middleware(['auth', 'verified',
         Route::get('/dashboard', 'index')->name('dashboard');
     });
     // // Front Routes
-
-    Route::get('front/products', [FrontProductController::class, 'index'])->name('front.products.index');
-    Route::get('front/products/{product:slug}', [FrontProductController::class, 'show'])->name('front.products.show');
+    Route::controller(FrontProductController::class)->prefix('front/products')->name('front.products.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{product:slug}', 'show')->name('show');
+    });
 
     Route::resource('cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
+
     Route::controller(CheckoutController::class)->group(function () {
         Route::get('/checkout', 'create')->name('checkout');
         Route::post('/checkout', 'store')->name('checkout.store');
@@ -59,4 +60,5 @@ Route::controller(PaymentController::class)->group(function () {
     Route::post('/orders/{order}/stripe/payment-intent', 'createStripePaymentIntent')->name('stripe.paymentIntent.create');
     Route::get('/orders/{order}/pay/stripe/callback', 'confirmPayment')->name('stripe.return');
 });
+
 Route::get('/orders/{order}', [OrdersController::class, 'show'])->name('orders.show');

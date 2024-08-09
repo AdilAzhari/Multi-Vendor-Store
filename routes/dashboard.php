@@ -5,7 +5,6 @@ use App\Http\Controllers\Dashboard\ImportProductController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\StoresController;
 use App\Http\Controllers\ProfileController;
-use App\Jobs\ImportProducts;
 use Illuminate\Support\Facades\Route;
 
 

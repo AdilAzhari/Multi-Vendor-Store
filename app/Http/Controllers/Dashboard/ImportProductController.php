@@ -13,7 +13,7 @@ class ImportProductController extends Controller
     }
     public function store(request $request){
        ImportProducts::dispatch($request->product_count)->onQueue('import');
-       return redirect()->route('products.index')->with('success', 'Start Importing products ....');
+       return to_route('products.index')->with('success', 'Start Importing products ....');
     }
 
 }

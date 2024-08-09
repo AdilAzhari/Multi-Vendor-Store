@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\DeliveryLocationUpdated;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateDeliveryRequest;
 use App\Http\Resources\DeliveryResource;
 use App\Models\Delivery;
 use App\Traits\ApiResponses;
@@ -17,13 +18,9 @@ class DeliveriesController extends Controller
     {
         return $this->successResponse(new DeliveryResource($delivery));
     }
-    public function update(Request $request, Delivery $delivery)
+    public function update(UpdateDeliveryRequest $request, Delivery $delivery)
     {
-        $request->validate([
-            'lng' => 'required|numeric',
-            'lat' => 'required|numeric',
-        ]);
-
+        $request->validated();
 
         $delivery->update($request->only('lat', 'lng'));
 

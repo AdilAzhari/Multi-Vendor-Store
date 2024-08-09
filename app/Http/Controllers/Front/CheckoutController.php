@@ -17,7 +17,7 @@ class CheckoutController extends Controller
     {
         if($cartModelRepository->get()->isEmpty())
         {
-            return redirect()->route('cart.index');
+            return to_route('cart.index');
         }
         return view('front.checkout', [
             'cart' => $cartModelRepository,
@@ -31,7 +31,7 @@ class CheckoutController extends Controller
         $storeCheckoutRequest->validated();
 
         $order = $cartModelRepository->storeOrder($storeCheckoutRequest);
-        return redirect()->route('orders.payments.create', $order->id);
+        return to_route('orders.payments.create', $order->id);
     }
 
     public function confirmation($orderNumber)

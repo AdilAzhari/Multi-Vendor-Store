@@ -6,19 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Services\ImageService;
 use Illuminate\Support\Str;
-
+use Illuminate\Http\Request;
 class CategoriesController extends Controller
 {
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $request = request();
-        $filters = $request->all();
-        $categories = Category::Filter($filters)->withCount('products')->latest()->paginate(10);
+        $categories = Category::filter($request->all())
+                ->withCount('products')
+                ->latest()
+                ->paginate(10);
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -38,10 +45,10 @@ class CategoriesController extends Controller
     {
         $request->parent_id;
         $request->merge([
-            'slug' => str::slug($request->name)
+            'slug' => str()->slug($request->name)
         ]);
         Category::create($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category added successfully');
+        return to_route('categories.index')->with('success', 'Category added successfully');
     }
 
     /**
@@ -64,21 +71,18 @@ class CategoriesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, string $id)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category = Category::findOrFail($id);
-        $request->merge([
-            'slug' => str::slug($request->name)
-        ]);
-        $category->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'status' => $request->status,
-            'image' => $request->image,
-            'parent_id' => $request->parent_id,
-            'slug' => $request->slug,
-        ]);
-        return redirect()->route('categories.index')->with('info', 'Category updated successfully');
+        $data = $request->validated();
+        $data['slug'] = Str()->slug($data['name']);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $this->imageService->store($request->file('image'), 'categories');
+        }
+
+        $category->update($data);
+
+        return to_route('categories.index')->with('info', 'Category updated successfully');
     }
 
     /**
@@ -87,7 +91,7 @@ class CategoriesController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')->with('Info', 'Category deleted and Trashed successfully');
+        return to_route('categories.index')->with('Info', 'Category deleted and Trashed successfully');
     }
 
     public function trash(){
@@ -99,7 +103,7 @@ class CategoriesController extends Controller
      */
     public function restore(string $id){
         category::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('categories.index')->with('Warning', 'Category restored from trash successfully.');
+        return to_route('categories.index')->with('Warning', 'Category restored from trash successfully.');
     }
     /**
      * Remove the specified resource from storage.
@@ -110,6 +114,6 @@ class CategoriesController extends Controller
             unlink(public_path('uploads/categories/' . $category->image));
         }
         $category->forceDelete();
-        return redirect()->route('categories.trash')->with('Danger', 'Category permanently deleted.');
+        return to_route('categories.trash')->with('Danger', 'Category permanently deleted.');
     }
 }

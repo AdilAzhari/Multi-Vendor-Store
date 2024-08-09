@@ -49,9 +49,9 @@ class PaymentController extends Controller
                 'transaction_data' => json_encode($paymentIntent),
                 'paid_at' => now(),
             ]);
-            return redirect()->route('orders.confirmation', $order->id)->with('success', 'Payment successful!');
+            return to_route('orders.confirmation', $order->id)->with('success', 'Payment successful!');
         }
-        return redirect()->route('orders.payments.create', ['order' => $order->id,
+        return to_route('orders.payments.create', ['order' => $order->id,
             'status' => 'Payment-failed'
         ])->with('error', 'Payment failed. Please try again.');
     }
