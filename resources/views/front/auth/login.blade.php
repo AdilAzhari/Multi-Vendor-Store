@@ -1,4 +1,4 @@
-@extends('layouts.front')
+{{-- @extends('layouts.front')
 @section('title', 'Login')
 @section('content')
     <!--====== Login Part Start ======-->
@@ -54,4 +54,4 @@
         </div>
     </section>
     <!--====== Login Part End ======-->
-@endsection
+@endsection --}}

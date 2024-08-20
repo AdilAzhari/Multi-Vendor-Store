@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Events\OrderEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\product;
@@ -20,7 +19,7 @@ class HomeController extends Controller
             ->latest()
             ->take(8)
             ->get();
-        // $categories = $products->pluck('category')->unique();
+
         $slides = [
             [
                 'image' => 'https://via.placeholder.com/800x500',
@@ -42,6 +41,7 @@ class HomeController extends Controller
             ->with('children') // Eager load
             ->whereNull('parent_id')
             ->get();
+
         return view('front.home', compact('categories', 'slides', 'products'));
 
     }

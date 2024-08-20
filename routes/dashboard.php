@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resources([
         'categories' => CategoriesController::class,
         'products' => ProductController::class,
-        'stores', StoresController::class,
+        // 'stores', StoresController::class,
     ]);
 
     Route::controller(CategoriesController::class)->prefix('categories')->name('categories.')->group(function () {

@@ -23,7 +23,7 @@ new #[Layout('layouts.guest')] class extends Component {
         $this->redirectIntended(default: route('home', absolute: false), navigate: true);
     }
 }; ?>
-<div>
+<div class='container w-1 bg-black'>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
